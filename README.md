@@ -1,6 +1,5 @@
 - 👋 Hi, I’m @Zer0codestuff
 - 👀 I’m interested in new open source projects
-- 🌱 I’m currently learning python
 - 💞️ I’m looking to collaborate on new open source projects
 - 📫 How to reach me: contact me on monnigabriele14@gmail.com
 
