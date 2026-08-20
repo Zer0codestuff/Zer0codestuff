@@ -9,10 +9,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASCII_SOURCE = ROOT / "assets" / "ascii-detail.txt"
+TONE_SOURCE = ROOT / "assets" / "ascii-tones.txt"
 OUTPUTS = {
     "dark": ROOT / "assets" / "neofetch-dark.svg",
     "light": ROOT / "assets" / "neofetch-light.svg",
 }
+
+ASCII_START_Y = -5.0
+ASCII_LINE_HEIGHT = 11.7
+TONE_LAYERS = (
+    ("tone-0", frozenset("01")),
+    ("tone-1", frozenset("23")),
+    ("tone-2", frozenset("45")),
+    ("tone-3", frozenset("67")),
+    ("tone-4", frozenset("89")),
+)
 
 PROFILE_ROWS = (
     (112, "Role", "AI / data / product engineer", "value"),
@@ -39,7 +50,11 @@ THEMES = {
         "positive": "#3fb950",
         "contact": "#ff7b72",
         "muted": "#616e7f",
-        "ascii": "#8b949e",
+        "tone-0": "#000000",
+        "tone-1": "#24292f",
+        "tone-2": "#484f58",
+        "tone-3": "#8b949e",
+        "tone-4": "#f0f6fc",
         "host": "#3fb950",
     },
     "light": {
@@ -51,7 +66,11 @@ THEMES = {
         "positive": "#1a7f37",
         "contact": "#cf222e",
         "muted": "#8c959f",
-        "ascii": "#57606a",
+        "tone-0": "#000000",
+        "tone-1": "#24292f",
+        "tone-2": "#57606a",
+        "tone-3": "#8c959f",
+        "tone-4": "#d0d7de",
         "host": "#1a7f37",
     },
 }
@@ -69,11 +88,25 @@ def info_row(y: int, label: str, value: str, value_class: str) -> str:
     )
 
 
-def build_svg(theme_name: str, ascii_lines: list[str]) -> str:
+def ascii_layer(
+    ascii_lines: list[str], tone_lines: list[str], css_class: str, tones: frozenset[str]
+) -> str:
+    rows = []
+    for index, (characters, tone_map) in enumerate(zip(ascii_lines, tone_lines)):
+        masked = "".join(
+            character if tone in tones else " "
+            for character, tone in zip(characters, tone_map)
+        )
+        y = ASCII_START_Y + index * ASCII_LINE_HEIGHT
+        rows.append(f'<tspan x="18" y="{y:.1f}">{escape(masked)}</tspan>')
+    return '<text x="18" class="ascii ' + css_class + '">\n' + "\n".join(rows) + "\n  </text>"
+
+
+def build_svg(theme_name: str, ascii_lines: list[str], tone_lines: list[str]) -> str:
     theme = THEMES[theme_name]
-    ascii_rows = "\n".join(
-        f'<tspan x="18" y="{40 + index * 11.7:.1f}">{escape(line)}</tspan>'
-        for index, line in enumerate(ascii_lines)
+    ascii_layers = "\n  ".join(
+        ascii_layer(ascii_lines, tone_lines, css_class, tones)
+        for css_class, tones in TONE_LAYERS
     )
     profile_rows = "\n".join(info_row(*row) for row in PROFILE_ROWS)
     stats_rows = "\n".join(info_row(*row) for row in STATS_ROWS)
@@ -98,13 +131,16 @@ def build_svg(theme_name: str, ascii_lines: list[str]) -> str:
     .contact {{ fill: {theme['contact']}; }}
     .muted {{ fill: {theme['muted']}; }}
     .host {{ fill: {theme['host']}; font-weight: 700; }}
-    .ascii {{ fill: {theme['ascii']}; font-size: 8.7px; }}
+    .ascii {{ font-size: 8.7px; }}
+    .tone-0 {{ fill: {theme['tone-0']}; }}
+    .tone-1 {{ fill: {theme['tone-1']}; }}
+    .tone-2 {{ fill: {theme['tone-2']}; }}
+    .tone-3 {{ fill: {theme['tone-3']}; }}
+    .tone-4 {{ fill: {theme['tone-4']}; }}
     text, tspan {{ white-space: pre; font-variant-ligatures: none; }}
   </style>
   <rect x="1" y="1" width="1198" height="558" rx="15" fill="{theme['background']}" stroke="{theme['border']}" stroke-width="2"/>
-  <text x="18" y="40" class="ascii">
-{ascii_rows}
-  </text>
+  {ascii_layers}
   <text x="470" y="52" fill="{theme['text']}">
     <tspan x="470" y="52" class="host">gabriele@zer0codestuff</tspan><tspan class="muted"> {header_rule}</tspan>
 {profile_rows}
@@ -117,11 +153,20 @@ def build_svg(theme_name: str, ascii_lines: list[str]) -> str:
 
 def main() -> None:
     ascii_lines = ASCII_SOURCE.read_text(encoding="utf-8").splitlines()
+    tone_lines = TONE_SOURCE.read_text(encoding="utf-8").splitlines()
     if len(ascii_lines) != 44 or max(map(len, ascii_lines)) > 72:
         raise ValueError("ASCII source must contain 44 lines of at most 72 columns")
+    if len(tone_lines) != len(ascii_lines):
+        raise ValueError("Tone map must contain one row for every ASCII row")
+    if any(len(tones) != len(characters) for characters, tones in zip(ascii_lines, tone_lines)):
+        raise ValueError("Tone-map rows must match the width of their ASCII rows")
+    if any(set(tones) - set(" 0123456789") for tones in tone_lines):
+        raise ValueError("Tone map may contain only spaces and digits 0-9")
 
     for theme_name, output_path in OUTPUTS.items():
-        output_path.write_text(build_svg(theme_name, ascii_lines), encoding="utf-8")
+        output_path.write_text(
+            build_svg(theme_name, ascii_lines, tone_lines), encoding="utf-8"
+        )
 
 
 if __name__ == "__main__":
