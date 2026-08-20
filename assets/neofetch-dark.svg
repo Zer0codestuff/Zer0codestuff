@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc" xml:space="preserve">
   <title id="title">Profilo NeoFetch di Gabriele Monni</title>
   <desc id="desc">Ritratto ASCII dettagliato con competenze, progetti e statistiche GitHub.</desc>
-  <rect x="1" y="1" width="1198" height="558" rx="10" fill="#000000" stroke="#30363d" stroke-width="2"/>
+  <rect x="1" y="1" width="1198" height="558" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
   <style>
     text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    .ascii { font-size: 8.7px; font-weight: 400; }
-    .host { fill: #3fb950; font-size: 20px; font-weight: 700; }
-    .label { fill: #d29922; font-size: 15px; }
-    .dots { fill: #484f58; font-size: 15px; }
+    .ascii { font-size: 8.7px; font-weight: 500; }
+    .host { fill: #56d364; font-size: 20px; font-weight: 700; }
+    .label { fill: #e3b341; font-size: 15px; }
+    .dots { fill: #6e7681; font-size: 15px; }
     .value { fill: #f0f6fc; font-size: 15px; }
     .blue { fill: #58a6ff; }
-    .green { fill: #3fb950; }
+    .green { fill: #56d364; }
     .red { fill: #ff7b72; }
-    .rule { stroke: #21262d; stroke-width: 1.5; }
-    .tone-0 { fill: #040404; } .tone-1 { fill: #121212; }
-    .tone-2 { fill: #222222; } .tone-3 { fill: #363636; }
-    .tone-4 { fill: #4e4e4e; } .tone-5 { fill: #696969; }
-    .tone-6 { fill: #888888; } .tone-7 { fill: #a9a9a9; }
-    .tone-8 { fill: #cdcdcd; } .tone-9 { fill: #eeeeee; }
+    .rule { stroke: #30363d; stroke-width: 1.5; }
+    .tone-0 { fill: #24292f; } .tone-1 { fill: #343b43; }
+    .tone-2 { fill: #48515b; } .tone-3 { fill: #5d6772; }
+    .tone-4 { fill: #737e89; } .tone-5 { fill: #8b96a1; }
+    .tone-6 { fill: #a4aeb8; } .tone-7 { fill: #bdc5ce; }
+    .tone-8 { fill: #d7dde3; } .tone-9 { fill: #f0f6fc; }
   </style>
   <g aria-label="Ritratto ASCII dettagliato">
     <text class="ascii" x="34" y="44.0">                                                                        </text>
