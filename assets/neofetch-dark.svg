@@ -18,10 +18,10 @@
     .host { fill: #3fb950; font-weight: 700; }
     .ascii { font-size: 8.7px; }
     .tone-0 { fill: #000000; }
-    .tone-1 { fill: #101010; }
-    .tone-2 { fill: #222222; }
-    .tone-3 { fill: #363636; }
-    .tone-4 { fill: #4e4e4e; }
+    .tone-1 { fill: #181818; }
+    .tone-2 { fill: #2a2a2a; }
+    .tone-3 { fill: #424242; }
+    .tone-4 { fill: #595959; }
     text, tspan { white-space: pre; font-variant-ligatures: none; }
   </style>
   <rect x="1" y="1" width="1198" height="558" rx="15" fill="#161b22" stroke="#30363d" stroke-width="2"/>
