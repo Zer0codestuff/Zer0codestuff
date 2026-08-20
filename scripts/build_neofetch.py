@@ -15,14 +15,10 @@ OUTPUTS = {
     "light": ROOT / "assets" / "neofetch-light.svg",
 }
 
-ASCII_START_Y = -5.0
-ASCII_LINE_HEIGHT = 11.7
-TONE_LAYERS = (
-    ("tone-0", frozenset("01")),
-    ("tone-1", frozenset("23")),
-    ("tone-2", frozenset("45")),
-    ("tone-3", frozenset("67")),
-    ("tone-4", frozenset("89")),
+ASCII_START_Y = 0.0
+ASCII_LINE_HEIGHT = 10.7
+TONE_LAYERS = tuple(
+    (f"tone-{tone}", frozenset(str(tone))) for tone in range(10)
 )
 
 PROFILE_ROWS = (
@@ -51,10 +47,15 @@ THEMES = {
         "contact": "#ff7b72",
         "muted": "#616e7f",
         "tone-0": "#000000",
-        "tone-1": "#24292f",
-        "tone-2": "#484f58",
-        "tone-3": "#8b949e",
-        "tone-4": "#f0f6fc",
+        "tone-1": "#101010",
+        "tone-2": "#222222",
+        "tone-3": "#363636",
+        "tone-4": "#4e4e4e",
+        "tone-5": "#696969",
+        "tone-6": "#888888",
+        "tone-7": "#a9a9a9",
+        "tone-8": "#cdcdcd",
+        "tone-9": "#eeeeee",
         "host": "#3fb950",
     },
     "light": {
@@ -67,10 +68,15 @@ THEMES = {
         "contact": "#cf222e",
         "muted": "#8c959f",
         "tone-0": "#000000",
-        "tone-1": "#24292f",
-        "tone-2": "#57606a",
-        "tone-3": "#8c959f",
-        "tone-4": "#d0d7de",
+        "tone-1": "#101010",
+        "tone-2": "#222222",
+        "tone-3": "#363636",
+        "tone-4": "#4e4e4e",
+        "tone-5": "#696969",
+        "tone-6": "#888888",
+        "tone-7": "#a9a9a9",
+        "tone-8": "#cdcdcd",
+        "tone-9": "#eeeeee",
         "host": "#1a7f37",
     },
 }
