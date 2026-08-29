@@ -20,14 +20,14 @@ PROFILE_ROWS = (
     (112, "Role", "AI / data / product engineer", "value"),
     (142, "Focus", "local-first & multimodal AI", "value"),
     (172, "Stack", "Python, TypeScript, Swift, JavaScript", "value"),
-    (202, "Building", "tools people can actually use", "value"),
+    (202, "Building", "gh-issue-scout and local AI tools", "value"),
     (232, "Location", "Italy", "value"),
     (262, "Contact", "LinkedIn | Email", "contact"),
 )
 
 STATS_ROWS = (
-    (362, "GitHub", "322 contributions in the last year", "positive"),
-    (392, "Repos", "13 original public projects", "value"),
+    (362, "GitHub", "374 contributions in the last year", "positive"),
+    (392, "Repos", "15 original public projects", "value"),
     (422, "Shipping", "web, macOS, local AI", "value"),
 )
 
@@ -89,8 +89,8 @@ def build_svg(theme_name: str, ascii_lines: list[str]) -> str:
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" font-family="ConsolasFallback,Consolas,monospace" width="1200px" height="560px" viewBox="0 0 1200 560" font-size="15px" role="img" aria-labelledby="title desc">
-  <title id="title">Profilo NeoFetch di Gabriele Monni</title>
-  <desc id="desc">Ritratto ASCII con competenze e statistiche GitHub.</desc>
+  <title id="title">Gabriele Monni's NeoFetch profile</title>
+  <desc id="desc">ASCII portrait with skills and GitHub statistics.</desc>
   <style>
     @font-face {{
       src: local('Consolas'), local('Consolas Bold');

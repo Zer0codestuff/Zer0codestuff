@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" font-family="ConsolasFallback,Consolas,monospace" width="1200px" height="560px" viewBox="0 0 1200 560" font-size="15px" role="img" aria-labelledby="title desc">
-  <title id="title">Profilo NeoFetch di Gabriele Monni</title>
-  <desc id="desc">Ritratto ASCII con competenze e statistiche GitHub.</desc>
+  <title id="title">Gabriele Monni's NeoFetch profile</title>
+  <desc id="desc">ASCII portrait with skills and GitHub statistics.</desc>
   <style>
     @font-face {
       src: local('Consolas'), local('Consolas Bold');
@@ -71,12 +71,12 @@
 <tspan x="470" y="112" class="muted">. </tspan><tspan class="key">Role</tspan>:<tspan class="muted"> ................................... </tspan><tspan class="value">AI / data / product engineer</tspan>
 <tspan x="470" y="142" class="muted">. </tspan><tspan class="key">Focus</tspan>:<tspan class="muted"> ................................... </tspan><tspan class="value">local-first &amp; multimodal AI</tspan>
 <tspan x="470" y="172" class="muted">. </tspan><tspan class="key">Stack</tspan>:<tspan class="muted"> ......................... </tspan><tspan class="value">Python, TypeScript, Swift, JavaScript</tspan>
-<tspan x="470" y="202" class="muted">. </tspan><tspan class="key">Building</tspan>:<tspan class="muted"> .............................. </tspan><tspan class="value">tools people can actually use</tspan>
+<tspan x="470" y="202" class="muted">. </tspan><tspan class="key">Building</tspan>:<tspan class="muted"> .......................... </tspan><tspan class="value">gh-issue-scout and local AI tools</tspan>
 <tspan x="470" y="232" class="muted">. </tspan><tspan class="key">Location</tspan>:<tspan class="muted"> ...................................................... </tspan><tspan class="value">Italy</tspan>
 <tspan x="470" y="262" class="muted">. </tspan><tspan class="key">Contact</tspan>:<tspan class="muted"> ............................................ </tspan><tspan class="contact">LinkedIn | Email</tspan>
     <tspan x="470" y="322">- GitHub Stats -</tspan><tspan class="muted"> -------------------------------------------------------</tspan>
-<tspan x="470" y="362" class="muted">. </tspan><tspan class="key">GitHub</tspan>:<tspan class="muted"> ........................... </tspan><tspan class="positive">322 contributions in the last year</tspan>
-<tspan x="470" y="392" class="muted">. </tspan><tspan class="key">Repos</tspan>:<tspan class="muted"> ................................... </tspan><tspan class="value">13 original public projects</tspan>
+<tspan x="470" y="362" class="muted">. </tspan><tspan class="key">GitHub</tspan>:<tspan class="muted"> ........................... </tspan><tspan class="positive">374 contributions in the last year</tspan>
+<tspan x="470" y="392" class="muted">. </tspan><tspan class="key">Repos</tspan>:<tspan class="muted"> ................................... </tspan><tspan class="value">15 original public projects</tspan>
 <tspan x="470" y="422" class="muted">. </tspan><tspan class="key">Shipping</tspan>:<tspan class="muted"> ....................................... </tspan><tspan class="value">web, macOS, local AI</tspan>
   </text>
 </svg>
