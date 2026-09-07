@@ -15,14 +15,14 @@ Rebuilt from scratch in September 2026. Replaced old colored cards, old ASCII so
 
 ## Constraints
 - Portrait characters remain monochrome. The information column uses orange labels, blue values, green headings and muted separators, following the latest user request. English artifact text. No em dashes.
-- SVG backgrounds are transparent so they inherit GitHub's actual background. The preview uses Primer page backgrounds, dark `#0d1117` and light `#ffffff`. The README chooses theme and viewport variants with picture sources. GitHub theme settings need a final check after publication.
+- SVG backgrounds are transparent so they inherit GitHub's actual background. The preview uses Primer page backgrounds, dark `#0d1117` and light `#ffffff`. The README chooses theme and viewport variants with picture sources. The published dark desktop card was visually verified on GitHub; custom GitHub theme overrides remain untested.
 - Keep the supplied person's face recognizable while retaining visibly coarse ASCII characters.
 - The original photo remains outside the repository. The generated text grids are the reproducible sources.
 - Use real, relevant information from the user's site. The selected projects replace volatile GitHub statistics.
 - A pre-existing untracked preview was preserved in ignored `.local/previous/preview.html` before replacement.
 
 ## Known issues and next steps
-Desktop light/dark and dark mobile previews were visually inspected, with mobile image loading and viewport bounds checked. The local preview server was restarted on 2026-09-07 after it stopped responding. The user approved publishing this redesign on 2026-09-07. The newer remote profile change featuring gh-issue-scout is preserved in the Building row. Contact text inside the SVG is not independently clickable when embedded as an image; real contact links are below it in the README. GitHub rendering after publication still needs checking. The mobile card stacks portrait and information through a picture media source.
+Desktop light/dark and dark mobile previews were visually inspected, with mobile image loading and viewport bounds checked. The local preview server was restarted on 2026-09-07 after it stopped responding. The user approved publishing this redesign on 2026-09-07. The newer remote profile change featuring gh-issue-scout is preserved in the Building row. Contact text inside the SVG is not independently clickable when embedded as an image; real contact links are below it in the README. Published to origin/main on 2026-09-07. Verified the live profile README and successful loading of profile-dark.svg on GitHub. The mobile card stacks portrait and information through a picture media source.
 
 ## Do not
 - Reuse the rejected old design or ASCII portraits.
