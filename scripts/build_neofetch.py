@@ -20,8 +20,8 @@ def convert_photo(path):
     photo = photo.resize((1368, 1824), Image.Resampling.LANCZOS)
     crop = (270, 380, 1210, 1370)
     gray = ImageOps.grayscale(photo).crop(crop)
-    gray = gray.filter(ImageFilter.UnsharpMask(radius=12, percent=110, threshold=4))
-    gray = gray.resize((COLS, ROWS), Image.Resampling.LANCZOS)
+    sample = gray.filter(ImageFilter.UnsharpMask(radius=12, percent=110, threshold=4))
+    sample = sample.resize((COLS, ROWS), Image.Resampling.LANCZOS)
     # Follow the outer silhouette to exclude the room without altering the face.
     outline = [(315,1365),(412,1290),(485,1255),(388,1230),(338,1130),
         (325,1010),(340,900),(327,790),(366,660),(398,566),(451,501),
@@ -40,13 +40,27 @@ def convert_photo(path):
                 if mask.getpixel((x,y)) < 100:
                     row+=' '
                 else:
-                    # Preserve the photo's lighting on a dark page; reverse ink
-                    # density for light pages so facial features stay dark.
-                    value=max(0, min(1, (gray.getpixel((x,y))-25)/185))
-                    value=value**1.1 if theme == 'dark' else (1-value)**1.1
+                    # Light backgrounds need dense dark characters in shadows.
+                    value=max(0, min(1, (sample.getpixel((x,y))-25)/185))
+                    value=(value if theme == "dark" else 1-value)**1.1
                     row+=ramp[round(value*(len(ramp)-1))]
             lines.append(row)
         (ASSETS/f'portrait-{theme}.txt').write_text('\n'.join(lines)+'\n')
+
+def portrait_row(line, theme):
+    """Use neutral gray ink to recover tonal depth on white backgrounds."""
+    if theme == 'dark':
+        return escape(line).replace(' ', '&#160;')
+    ramp = " .,:;irsXA253hMHGS#9B&@"
+    parts = []
+    for char in line:
+        density = ramp.index(char)/(len(ramp)-1)
+        ink = round(225*(1-density)**0.8)
+        color = f'#{ink:02x}{ink:02x}{ink:02x}'
+        encoded = escape(char).replace(' ', '&#160;')
+        weight = 700 if density >= 0.72 else 400
+        parts.append(f'<tspan fill="{color}" font-weight="{weight}">{encoded}</tspan>')
+    return ''.join(parts)
 
 THEMES = {
     'dark': {'ink':'#ffffff', 'text':'#f0f6fc', 'key':'#ffa657',
@@ -66,7 +80,7 @@ def build(lines, profile, mobile=False, theme="dark"):
       f'<g fill="{colors["text"]}" font-family="Menlo,Consolas,monospace" style="font-variant-ligatures:none">',
       f'<g fill="{colors["ink"]}" font-size="9.7" xml:space="preserve" style="white-space:pre">']
     for i,line in enumerate(lines):
-        encoded=escape(line).replace(' ', '&#160;')
+        encoded=portrait_row(line, theme)
         parts.append(f'<text x="{px}" y="{py+i*9.1:.1f}" textLength="390" lengthAdjust="spacingAndGlyphs">{encoded}</text>')
     parts.append('</g>')
     mobile_y = ty
@@ -103,7 +117,7 @@ def build(lines, profile, mobile=False, theme="dark"):
     row(3,'Role',profile['role'])
     row(4,'Location',profile['location'])
     row(5,'Work','IT Technical Officer')
-    row(6,'Building','gh-issue-scout and local AI tools')
+    row(6,'Building',' / '.join(profile['building']))
     row(7,'Languages.Code','Python, TypeScript, Swift, SQL')
     row(8,'Languages.Spoken','Italian, English')
     row(10,'Focus.AI','Multimodal systems, local inference')
@@ -122,8 +136,13 @@ def build(lines, profile, mobile=False, theme="dark"):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--photo',type=Path)
+    parser.add_argument('--classic', action='store_true', help='Build the earlier profile without radar')
     args=parser.parse_args()
     if args.photo: convert_photo(args.photo)
+    if not args.classic:
+        from build_profile import main as build_profile
+        build_profile()
+        return
     profile=json.loads((ROOT/'profile.json').read_text())
     for theme in THEMES:
         lines=(ASSETS/f'portrait-{theme}.txt').read_text().splitlines()

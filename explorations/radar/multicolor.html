@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multicolor Toolkit studies | Gabriele Monni</title>
+<style>
+:root { color-scheme:dark; --bg:#0d1117; --fg:#f0f6fc; --muted:#8b949e; --line:#30363d; --accent:#a5d6ff; }
+:root[data-theme="light"] { color-scheme:light; --bg:#fff; --fg:#1f2328; --muted:#39434f; --line:#8c98a5; --accent:#123f78; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family:Menlo,Consolas,monospace; }
+main { max-width:1144px; padding:32px; margin:auto; }
+h1 { font-size:21px; font-weight:500; margin:0 0 12px; }
+p { color:var(--muted); font-size:12px; line-height:1.7; margin:0; }
+nav { display:flex; gap:6px; flex-wrap:wrap; margin:22px 0 30px; }
+button { font:inherit; font-size:12px; padding:9px 12px; border:1px solid var(--line); border-radius:4px; color:var(--fg); background:var(--bg); cursor:pointer; }
+button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); }
+button:hover { border-color:var(--muted); }
+:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.themes { display:flex; gap:6px; margin-left:auto; }
+article { border-top:1px solid var(--line); padding-top:20px; margin-bottom:44px; }
+h2 { font-size:17px; font-weight:500; margin:0 0 9px; }
+picture,img { display:block; width:100%; height:auto; }
+picture { margin-top:18px; }
+a { color:var(--accent); font-size:12px; text-underline-offset:4px; }
+footer { border-top:1px solid var(--line); padding-top:22px; }
+[hidden] { display:none!important; }
+@media(max-width:650px) { main { padding:24px 14px; } .themes { margin-left:0; } h1 { font-size:19px; } }
+</style>
+<main>
+<header><h1>Toolkit / multicolor</h1><p>Layout B. Three multicolor palettes without yellow or green.<br>Same content, portrait and radar geometry.</p></header>
+<p><a href="round-3.html">Ten new palette studies</a></p>
+<nav aria-label="Layout and theme">
+<button data-layout="all" aria-pressed="true">All palettes</button>
+<button data-layout="prism" aria-pressed="false">Prism</button>
+<button data-layout="coral" aria-pressed="false">Coral</button>
+<button data-layout="polar" aria-pressed="false">Polar</button>
+<div class="themes"><button data-theme="dark" aria-pressed="true">Dark</button><button data-theme="light" aria-pressed="false">Light</button></div>
+</nav>
+<section aria-label="Three multicolor palettes"><article data-proposal="prism"><h2>Prism</h2><p>Violet headings, blue labels, pale rose values and a pink radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Layout B in the Prism multicolor palette, with monochrome portrait and illustrative Braille radar."></picture></article>
+<article data-proposal="coral"><h2>Coral</h2><p>Deep coral headings, blue labels, neutral values and a blue radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Layout B in the Coral multicolor palette, with monochrome portrait and illustrative Braille radar."></picture></article>
+<article data-proposal="polar"><h2>Polar</h2><p>Blue headings, rose labels, lavender values and a blue radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Layout B in the Polar multicolor palette, with monochrome portrait and illustrative Braille radar."></picture></article>
+</section>
+<footer><p>Local proposals. The published profile is unchanged.<br>Radar values remain illustrative.</p><p><a href="colors.html">Earlier color options</a></p></footer>
+</main>
+<script>
+const query = new URLSearchParams(location.search);
+let theme = query.get('theme') === 'light' ? 'light' : 'dark';
+let layout = ['prism', 'coral', 'polar'].includes(query.get('layout')) ? query.get('layout') : 'all';
+function render() {
+ document.documentElement.dataset.theme = theme;
+ document.querySelectorAll('button[data-theme]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.theme===theme));
+ document.querySelectorAll('button[data-layout]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.layout===layout));
+ document.querySelectorAll('article').forEach(a=>{
+  const id=a.dataset.proposal;
+  a.hidden=layout!=='all' && layout!==id;
+  a.querySelector('source').srcset=`palettes/${id}-${theme}-mobile.svg`;
+  a.querySelector('img').src=`palettes/${id}-${theme}.svg`;
+ });
+ history.replaceState(null,'',`${location.pathname}?${new URLSearchParams({theme,layout})}`);
+}
+document.querySelectorAll('button[data-theme]').forEach(b=>b.addEventListener('click',()=>{theme=b.dataset.theme;render()}));
+document.querySelectorAll('button[data-layout]').forEach(b=>b.addEventListener('click',()=>{layout=b.dataset.layout;render()}));
+render();
+</script>
+</html>

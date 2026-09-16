@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toolkit color studies | Gabriele Monni</title>
+<style>
+:root { color-scheme:dark; --bg:#0d1117; --fg:#f0f6fc; --muted:#8b949e; --line:#30363d; --accent:#a5d6ff; }
+:root[data-theme="light"] { color-scheme:light; --bg:#fff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --accent:#0550ae; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family:Menlo,Consolas,monospace; }
+main { max-width:1144px; padding:32px; margin:auto; }
+h1 { font-size:21px; font-weight:500; margin:0 0 12px; }
+p { color:var(--muted); font-size:12px; line-height:1.7; margin:0; }
+nav { display:flex; gap:6px; flex-wrap:wrap; margin:22px 0 30px; }
+button { font:inherit; font-size:12px; padding:9px 12px; border:1px solid var(--line); border-radius:4px; color:var(--fg); background:var(--bg); cursor:pointer; }
+button[aria-pressed="true"] { color:var(--accent); border-color:var(--accent); }
+button:hover { border-color:var(--muted); }
+:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.themes { display:flex; gap:6px; margin-left:auto; }
+article { border-top:1px solid var(--line); padding-top:20px; margin-bottom:44px; }
+h2 { font-size:17px; font-weight:500; margin:0 0 9px; }
+picture,img { display:block; width:100%; height:auto; }
+picture { margin-top:18px; }
+a { color:var(--accent); font-size:12px; text-underline-offset:4px; }
+footer { border-top:1px solid var(--line); padding-top:22px; }
+[hidden] { display:none!important; }
+@media(max-width:650px) { main { padding:24px 14px; } .themes { margin-left:0; } h1 { font-size:19px; } }
+</style>
+<main>
+<header><h1>Toolkit / color studies</h1><p>Layout B. Four palettes without yellow or green.<br>Same content, portrait and radar geometry.</p></header>
+<p><a href="multicolor.html">New multicolor options</a></p>
+<nav aria-label="Layout and theme">
+<button data-layout="all" aria-pressed="true">All palettes</button>
+<button data-layout="glacier" aria-pressed="false">Glacier</button>
+<button data-layout="iris" aria-pressed="false">Iris</button>
+<button data-layout="rose" aria-pressed="false">Rose</button>
+<button data-layout="silver" aria-pressed="false">Silver</button>
+<div class="themes"><button data-theme="dark" aria-pressed="true">Dark</button><button data-theme="light" aria-pressed="false">Light</button></div>
+</nav>
+<section aria-label="Four color palettes"><article data-proposal="glacier"><h2>Glacier</h2><p>Ice blue headings, white values, a blue radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Toolkit layout in the Glacier palette, with a monochrome ASCII portrait and Braille radar. Scores are illustrative."></picture></article>
+<article data-proposal="iris"><h2>Iris</h2><p>Lavender headings, pale lilac values, a violet radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Toolkit layout in the Iris palette, with a monochrome ASCII portrait and Braille radar. Scores are illustrative."></picture></article>
+<article data-proposal="rose"><h2>Rose</h2><p>Muted rose labels, cool blue values, a rose radar.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Toolkit layout in the Rose palette, with a monochrome ASCII portrait and Braille radar. Scores are illustrative."></picture></article>
+<article data-proposal="silver"><h2>Silver</h2><p>Only white, silver and graphite. No color accents.</p><picture><source media="(max-width:650px)"><img width="1080" height="860" alt="Toolkit layout in the Silver palette, with a monochrome ASCII portrait and Braille radar. Scores are illustrative."></picture></article>
+</section>
+<footer><p>Local proposals. The published profile is unchanged.<br>Radar values remain illustrative.</p><p><a href="layouts.html?theme=dark&layout=toolkit">Back to layout proposals</a></p></footer>
+</main>
+<script>
+const query = new URLSearchParams(location.search);
+let theme = query.get('theme') === 'light' ? 'light' : 'dark';
+let layout = ['glacier', 'iris', 'rose', 'silver'].includes(query.get('layout')) ? query.get('layout') : 'all';
+function render() {
+ document.documentElement.dataset.theme = theme;
+ document.querySelectorAll('button[data-theme]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.theme===theme));
+ document.querySelectorAll('button[data-layout]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.layout===layout));
+ document.querySelectorAll('article').forEach(a=>{
+  const id=a.dataset.proposal;
+  a.hidden=layout!=='all' && layout!==id;
+  a.querySelector('source').srcset=`palettes/${id}-${theme}-mobile.svg`;
+  a.querySelector('img').src=`palettes/${id}-${theme}.svg`;
+ });
+ history.replaceState(null,'',`${location.pathname}?${new URLSearchParams({theme,layout})}`);
+}
+document.querySelectorAll('button[data-theme]').forEach(b=>b.addEventListener('click',()=>{theme=b.dataset.theme;render()}));
+document.querySelectorAll('button[data-layout]').forEach(b=>b.addEventListener('click',()=>{layout=b.dataset.layout;render()}));
+render();
+</script>
+</html>

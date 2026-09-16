@@ -3,7 +3,7 @@
     <source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/profile-dark-mobile.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/profile-dark.svg">
     <source media="(max-width: 600px)" srcset="assets/profile-light-mobile.svg">
-    <img src="assets/profile-light.svg" width="1080" alt="Gabriele Monni, software engineer in Cagliari, Italy. Applied AI, native apps, data and explainable systems. Python, TypeScript, Swift and SQL.">
+    <img src="assets/profile-light.svg" width="1080" alt="Gabriele Monni, software engineer in Cagliari, Italy. Applied AI, native apps, data and explainable systems. Python, TypeScript, Swift and SQL. Braille radar with illustrative focus values.">
   </picture>
 </a>
 

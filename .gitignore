@@ -2,3 +2,8 @@
 .local/
 __pycache__/
 .DS_Store
+
+# Generated design studies. Rebuild with the radar scripts.
+explorations/radar/assets/
+explorations/radar/layouts/
+explorations/radar/palettes/

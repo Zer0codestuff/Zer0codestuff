@@ -1,0 +1,284 @@
+{
+  "glacier": {
+    "name": "Glacier",
+    "description": "Ice blue headings, white values, a blue radar.",
+    "dark": {
+      "label": "#9acbff",
+      "value": "#e0e8f1",
+      "heading": "#78b4ff",
+      "trace": "#9acbff"
+    },
+    "light": {
+      "label": "#235c96",
+      "value": "#28384a",
+      "heading": "#174d85",
+      "trace": "#235c96"
+    }
+  },
+  "iris": {
+    "name": "Iris",
+    "description": "Lavender headings, pale lilac values, a violet radar.",
+    "dark": {
+      "label": "#bca7ed",
+      "value": "#ded8ef",
+      "heading": "#d1bdff",
+      "trace": "#bca7ed"
+    },
+    "light": {
+      "label": "#694597",
+      "value": "#42364f",
+      "heading": "#623493",
+      "trace": "#7750a6"
+    }
+  },
+  "rose": {
+    "name": "Rose",
+    "description": "Muted rose labels, cool blue values, a rose radar.",
+    "dark": {
+      "label": "#e6a9c2",
+      "value": "#bbcfe6",
+      "heading": "#efc6d7",
+      "trace": "#e6a9c2"
+    },
+    "light": {
+      "label": "#984368",
+      "value": "#3d5775",
+      "heading": "#8b345a",
+      "trace": "#a14c72"
+    }
+  },
+  "silver": {
+    "name": "Silver",
+    "description": "Only white, silver and graphite. No color accents.",
+    "dark": {
+      "label": "#b3b3b3",
+      "value": "#dedede",
+      "heading": "#fafafa",
+      "trace": "#c8c8c8",
+      "muted": "#707070",
+      "text": "#eeeeee",
+      "grid": "#393939"
+    },
+    "light": {
+      "label": "#505050",
+      "value": "#292929",
+      "heading": "#171717",
+      "trace": "#555555",
+      "muted": "#777777",
+      "text": "#292929",
+      "grid": "#c6c6c6"
+    }
+  },
+  "prism": {
+    "name": "Prism",
+    "description": "Violet headings, blue labels, pale rose values and a pink radar.",
+    "dark": {
+      "heading": "#bd9cff",
+      "label": "#84c6ff",
+      "value": "#edc8db",
+      "trace": "#efa0cc"
+    },
+    "light": {
+      "heading": "#6b39a6",
+      "label": "#155e96",
+      "value": "#793e5f",
+      "trace": "#a13974"
+    }
+  },
+  "coral": {
+    "name": "Coral",
+    "description": "Deep coral headings, blue labels, neutral values and a blue radar.",
+    "dark": {
+      "heading": "#e86d7d",
+      "label": "#8cbfff",
+      "value": "#e2e6ee",
+      "trace": "#8cbfff"
+    },
+    "light": {
+      "heading": "#781b30",
+      "label": "#123f78",
+      "value": "#101820",
+      "trace": "#06499c",
+      "text": "#101820",
+      "muted": "#46515e",
+      "grid": "#788797",
+      "ink": "#111111"
+    }
+  },
+  "polar": {
+    "name": "Polar",
+    "description": "Blue headings, rose labels, lavender values and a blue radar.",
+    "dark": {
+      "heading": "#8fcaff",
+      "label": "#e99fc6",
+      "value": "#cec1f2",
+      "trace": "#8fcaff"
+    },
+    "light": {
+      "heading": "#165e98",
+      "label": "#974064",
+      "value": "#65478a",
+      "trace": "#165e98"
+    }
+  },
+  "cobalt": {
+    "name": "Cobalt",
+    "description": "Saturated blue labels; white headings and neutral values.",
+    "dark": {
+      "heading": "#ffffff",
+      "label": "#76a5ff",
+      "value": "#d5dbe5",
+      "trace": "#6498ff"
+    },
+    "light": {
+      "heading": "#182239",
+      "label": "#235cbb",
+      "value": "#354052",
+      "trace": "#235cbb"
+    }
+  },
+  "crimson": {
+    "name": "Crimson",
+    "description": "Red headings and radar; gray labels and white values.",
+    "dark": {
+      "heading": "#ff7787",
+      "label": "#aeb8c8",
+      "value": "#edf0f5",
+      "trace": "#ff7787"
+    },
+    "light": {
+      "heading": "#ad253d",
+      "label": "#5c6574",
+      "value": "#28303e",
+      "trace": "#b02540"
+    }
+  },
+  "ultraviolet": {
+    "name": "Ultraviolet",
+    "description": "Electric violet headings, magenta labels and white values.",
+    "dark": {
+      "heading": "#b18bff",
+      "label": "#f184da",
+      "value": "#e8e8ef",
+      "trace": "#b18bff"
+    },
+    "light": {
+      "heading": "#7040b5",
+      "label": "#a13387",
+      "value": "#373544",
+      "trace": "#7040b5"
+    }
+  },
+  "arcade": {
+    "name": "Arcade",
+    "description": "Bright pink headings, blue labels and neutral values.",
+    "dark": {
+      "heading": "#ff83bd",
+      "label": "#71b5ff",
+      "value": "#e2e7ef",
+      "trace": "#ff83bd"
+    },
+    "light": {
+      "heading": "#ad326b",
+      "label": "#2366a2",
+      "value": "#323c4a",
+      "trace": "#ad326b"
+    }
+  },
+  "slate": {
+    "name": "Slate",
+    "description": "Muted blue-gray text, soft white headings and radar.",
+    "dark": {
+      "heading": "#d9e4f1",
+      "label": "#98a8bd",
+      "value": "#bacde0",
+      "trace": "#d9e4f1"
+    },
+    "light": {
+      "heading": "#2e425b",
+      "label": "#5b697d",
+      "value": "#405b77",
+      "trace": "#425c79"
+    }
+  },
+  "bordeaux": {
+    "name": "Bordeaux",
+    "description": "Dusty rose headings and labels; neutral values.",
+    "dark": {
+      "heading": "#d5a0b0",
+      "label": "#bda4b3",
+      "value": "#e5dfe3",
+      "trace": "#d5a0b0"
+    },
+    "light": {
+      "heading": "#803b52",
+      "label": "#735466",
+      "value": "#3f343d",
+      "trace": "#803b52"
+    }
+  },
+  "royal": {
+    "name": "Royal",
+    "description": "Violet headings, neutral labels and blue values.",
+    "dark": {
+      "heading": "#ba9fff",
+      "label": "#b7bcc9",
+      "value": "#96baff",
+      "trace": "#ba9fff"
+    },
+    "light": {
+      "heading": "#6940a8",
+      "label": "#5b5d6a",
+      "value": "#325d9d",
+      "trace": "#6940a8"
+    }
+  },
+  "blueprint": {
+    "name": "Blueprint",
+    "description": "A blue spectrum, with pale blue headings and radar.",
+    "dark": {
+      "heading": "#b2d7ff",
+      "label": "#739eff",
+      "value": "#b8caff",
+      "trace": "#b2d7ff"
+    },
+    "light": {
+      "heading": "#204e86",
+      "label": "#345eb1",
+      "value": "#395790",
+      "trace": "#204e86"
+    }
+  },
+  "ink": {
+    "name": "Ink",
+    "description": "Neutral text throughout; violet only on the radar.",
+    "dark": {
+      "heading": "#f4f4f6",
+      "label": "#a6a6ad",
+      "value": "#dedee3",
+      "trace": "#b38cff"
+    },
+    "light": {
+      "heading": "#202024",
+      "label": "#686870",
+      "value": "#3b3b43",
+      "trace": "#7b45bc"
+    }
+  },
+  "voltage": {
+    "name": "Voltage",
+    "description": "Blue headings, neutral labels and pink values.",
+    "dark": {
+      "heading": "#80b9ff",
+      "label": "#c5ccd7",
+      "value": "#ff9cce",
+      "trace": "#80b9ff"
+    },
+    "light": {
+      "heading": "#205eaa",
+      "label": "#515d6d",
+      "value": "#a23872",
+      "trace": "#205eaa"
+    }
+  }
+}

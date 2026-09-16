@@ -1,0 +1,30 @@
+{
+  "status": "Illustrative values. Not measured skills or GitHub statistics.",
+  "scale": 100,
+  "axes": [
+    {
+      "label": "Local AI",
+      "value": 92
+    },
+    {
+      "label": "Data analysis",
+      "value": 80
+    },
+    {
+      "label": "Native apps",
+      "value": 58
+    },
+    {
+      "label": "Automation",
+      "value": 82
+    },
+    {
+      "label": "AI research",
+      "value": 72
+    },
+    {
+      "label": "Multimodal AI",
+      "value": 88
+    }
+  ]
+}

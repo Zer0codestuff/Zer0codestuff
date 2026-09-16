@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar studies | Gabriele Monni</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0d1117; --fg:#f0f6fc; --muted:#8b949e; --line:#30363d; --blue:#a5d6ff; --green:#3fb950; }
+    :root[data-theme="light"] { color-scheme:light; --bg:#fff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --blue:#0550ae; --green:#1a7f37; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:Menlo,Consolas,monospace; }
+    main { width:min(1520px, 100%); margin:auto; padding:40px 36px; }
+    header { display:flex; justify-content:space-between; align-items:start; gap:24px; margin-bottom:30px; }
+    h1 { margin:0 0 12px; font-size:25px; font-weight:500; letter-spacing:-1px; }
+    p { margin:0; color:var(--muted); font-size:12px; line-height:1.7; }
+    button, select { font:inherit; font-size:12px; color:var(--fg); background:var(--bg); cursor:pointer; border:1px solid var(--line); border-radius:5px; padding:9px 12px; }
+    button:hover, select:hover { border-color:var(--muted); }
+    button[aria-pressed="true"] { color:var(--blue); border-color:var(--blue); }
+    :focus-visible { outline:2px solid var(--blue); outline-offset:4px; }
+    .controls { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+    .group { display:flex; gap:5px; }
+    #gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 36px; }
+    article { min-width:0; border-top:1px solid var(--line); padding-top:18px; }
+    .caption { display:flex; justify-content:space-between; gap:16px; align-items:start; }
+    h2 { font-size:17px; font-weight:500; margin:0 0 8px; }
+    h2 span { color:var(--green); margin-right:10px; }
+    article p { font-size:11px; }
+    img, picture { display:block; width:100%; height:auto; }
+    .study-image { margin-top:8px; }
+    .links { display:flex; gap:18px; align-items:center; padding:0 18px 14px; }
+    a { color:var(--blue); text-underline-offset:4px; font-size:11px; }
+    .links button { border:0; padding:0; color:var(--blue); text-decoration:underline; text-underline-offset:4px; background:none; font-size:11px; }
+    #profile { max-width:1080px; margin:auto; }
+    .profile-control { display:flex; gap:16px; align-items:center; border-top:1px solid var(--line); padding:18px 0; margin-bottom:14px; }
+    label { color:var(--muted); font-size:12px; }
+    #profile-chart { border-top:1px solid var(--line); margin:12px auto 0; }
+    #profile-chart[data-design="braille"] { max-width:600px; border:0; }
+    .profile-footer { display:flex; gap:18px; margin:20px 22px; }
+    footer { border-top:1px solid var(--line); margin-top:30px; padding-top:20px; }
+    footer p { font-size:11px; }
+    [hidden] { display:none !important; }
+    @media(max-width:1050px) { header { flex-direction:column; } main { padding:26px 22px; } #gallery { gap:28px 20px; } }
+    @media(max-width:720px) { #gallery { grid-template-columns:1fr; } main { padding:24px 14px; } h1 { font-size:23px; } header { margin-bottom:26px; } .caption { padding:0 7px; } .controls { gap:10px; } .profile-control { flex-wrap:wrap; } article { padding-top:20px; } .links { padding-left:8px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>ASCII radar studies</h1>
+      <p>Gabriele Monni / radar studies<br>Same six axes. Same illustrative values.</p>
+    </div>
+    <div class="controls" aria-label="Preview controls">
+      <a href="layouts.html">Profile layouts</a>
+      <a href="colors.html">Colors for layout B</a>
+      <div class="group" aria-label="Layout">
+        <button type="button" data-mode="compare" aria-pressed="true">Compare</button>
+        <button type="button" data-mode="profile" aria-pressed="false">In profile</button>
+        <button type="button" data-mode="radar" aria-pressed="false">Radar only</button>
+      </div>
+      <div class="group" aria-label="Theme">
+        <button type="button" data-theme="dark" aria-pressed="true">Dark</button>
+        <button type="button" data-theme="light" aria-pressed="false">Light</button>
+      </div>
+    </div>
+  </header>
+  <section id="gallery" aria-label="Four radar designs"></section>
+  <section id="profile" aria-label="Profile integration preview" hidden>
+    <div class="profile-control">
+      <label for="variant">Radar design</label>
+      <select id="variant">
+        <option value="wireframe">A / Wireframe</option>
+        <option value="braille" selected>B / Braille</option>
+        <option value="phosphor">C / Phosphor</option>
+        <option value="pixel">D / Pixel</option>
+      </select>
+      <p>Local composition preview</p>
+    </div>
+    <picture id="existing-profile">
+      <source media="(max-width:600px)" srcset="../../assets/profile-dark-mobile.svg">
+      <img src="../../assets/profile-dark.svg" width="1080" height="530" alt="Gabriele Monni's existing Neofetch profile with ASCII portrait.">
+    </picture>
+    <picture id="profile-chart">
+      <source media="(max-width:600px)" srcset="assets/braille-dark-mobile.svg">
+      <img src="assets/braille-dark.svg" width="900" height="580" alt="Braille radar with illustrative values.">
+    </picture>
+    <div class="profile-footer">
+      <a href="https://gabrielemonni.me">Website</a>
+      <a href="https://www.linkedin.com/in/hire-gabriele-monni">LinkedIn</a>
+      <a href="mailto:monnigabriele14@gmail.com">Email</a>
+    </div>
+  </section>
+  <footer>
+    <p>Illustrative scores, not measured skills. Every axis runs from 0 to 100.<br>
+      Reference: <a href="https://x.com/akshay_pachaar/status/2095906342154424750">Magnitude terminal radar, shared by Akshay Pachaar</a>.
+      Original renderers; no code or assets copied.</p>
+  </footer>
+</main>
+<script>
+  const designs = [
+    { id:'wireframe', letter:'A', name:'Wireframe', detail:'Open contour. Pure ASCII. Closest to Neofetch.' },
+    { id:'braille', letter:'B', name:'Braille', detail:'Aligned dots. Open contour. Labels on the axes.' },
+    { id:'phosphor', letter:'C', name:'Phosphor', detail:'Circular grid. Green character field. Pure ASCII.' },
+    { id:'pixel', letter:'D', name:'Pixel', detail:'Stepped edges and block shading. A denser silhouette.' }
+  ];
+  const params = new URLSearchParams(location.search);
+  let theme = params.get('theme') === 'light' ? 'light' : 'dark';
+  let mode = ['profile', 'radar'].includes(params.get('mode')) ? params.get('mode') : 'compare';
+  let variant = designs.some(d => d.id === params.get('variant')) ? params.get('variant') : 'braille';
+  const gallery = document.querySelector('#gallery');
+  for (const d of designs) {
+    const article = document.createElement('article');
+    article.dataset.variant = d.id;
+    article.innerHTML = `<div class="caption"><div><h2><span>${d.letter}</span>${d.name}</h2><p>${d.detail}</p></div></div>
+      <picture class="study-image"><source media="(max-width:720px)"><img width="900" height="580" alt="${d.name} radar with illustrative values on six axes, all scaled from 0 to 100. Values are listed in the SVG and text grid."></picture>
+      <div class="links"><button type="button" data-view="${d.id}">View in profile</button><a class="svg-link">Open SVG</a><a href="assets/${d.id}.txt">Text grid</a></div>`;
+    gallery.append(article);
+  }
+  function picture(el, base) {
+    el.querySelector('source').srcset = `${base}-mobile.svg`;
+    el.querySelector('img').src = `${base}.svg`;
+  }
+  function render() {
+    document.documentElement.dataset.theme = theme;
+    document.querySelectorAll('[data-theme]').forEach(b => {
+      if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', b.dataset.theme === theme);
+    });
+    document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === mode));
+    gallery.hidden = mode !== 'compare';
+    document.querySelector('#profile').hidden = mode === 'compare';
+    document.querySelector('#existing-profile').hidden = mode === 'radar';
+    document.querySelector('.profile-footer').hidden = mode === 'radar';
+    document.querySelector('#profile-chart').dataset.design = variant;
+    document.querySelector('#variant').value = variant;
+    for (const d of designs) {
+      const article = gallery.querySelector(`[data-variant="${d.id}"]`);
+      const base = `assets/${d.id}-${theme}`;
+      picture(article.querySelector('picture'), base);
+      article.querySelector('.svg-link').href = `${base}.svg`;
+    }
+    picture(document.querySelector('#existing-profile'), `../../assets/profile-${theme}`);
+    picture(document.querySelector('#profile-chart'), `assets/${variant}-${theme}`);
+    document.querySelector('#profile-chart img').alt = `${designs.find(d => d.id === variant).name} radar with illustrative values.`;
+    const query = new URLSearchParams({theme, mode, variant});
+    history.replaceState(null, '', `${location.pathname}?${query}`);
+  }
+  document.querySelectorAll('button[data-theme]').forEach(b => b.addEventListener('click', () => { theme = b.dataset.theme; render(); }));
+  document.querySelectorAll('button[data-mode]').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; render(); }));
+  document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => { variant = b.dataset.view; mode = 'profile'; render(); window.scrollTo(0,0); }));
+  document.querySelector('#variant').addEventListener('change', e => { variant = e.target.value; render(); });
+  render();
+</script>
+</body>
+</html>

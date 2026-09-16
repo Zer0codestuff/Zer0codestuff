@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ten palette studies | Gabriele Monni</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1117;--fg:#f0f6fc;--muted:#8b949e;--line:#30363d;--accent:#a5d6ff}
+:root[data-theme="light"]{color-scheme:light;--bg:#fff;--fg:#1f2328;--muted:#59636e;--line:#d1d9e0;--accent:#0550ae}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Menlo,Consolas,monospace}main{max-width:1500px;margin:auto;padding:32px}main[data-view="single"]{max-width:1144px}h1{font-size:22px;font-weight:500;margin:0 0 12px}p{font-size:12px;line-height:1.7;color:var(--muted);margin:0}nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 30px}button,select{font:inherit;font-size:12px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);cursor:pointer}button[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}button:hover,select:hover{border-color:var(--muted)}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.themes{display:flex;gap:6px;margin-left:auto}label{font-size:12px;color:var(--muted)}section{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 28px}main[data-view="single"] section{grid-template-columns:1fr}article{min-width:0;border-top:1px solid var(--line);padding-top:18px}h2{font-size:17px;font-weight:500;margin:0 0 9px}.caption{display:flex;align-items:start;gap:12px;justify-content:space-between}.inspect{padding:7px 10px}picture,img{display:block;width:100%;height:auto}picture{margin-top:20px}.swatches{display:flex;gap:5px;margin-top:12px}.swatches i{display:block;width:24px;height:5px;background:var(--swatch)}footer{border-top:1px solid var(--line);margin-top:36px;padding-top:20px}a{color:var(--accent);font-size:12px;text-underline-offset:4px}[hidden]{display:none!important}@media(max-width:740px){main{padding:24px 14px}section{grid-template-columns:1fr}.themes{margin-left:0}h1{font-size:20px}}
+</style>
+<main data-view="all">
+<header><h1>Ten palette studies</h1><p>Layout B. Stronger accents, quieter combinations and different color emphasis.<br>Monochrome portrait. No yellow or green. Illustrative radar scores.</p></header>
+<nav aria-label="Preview controls"><button id="compare" aria-pressed="true">Compare all 10</button><label for="palette">Inspect</label><select id="palette"><option value="all">Choose a palette</option></select><div class="themes"><button data-theme="dark" aria-pressed="true">Dark</button><button data-theme="light" aria-pressed="false">Light</button></div></nav>
+<section aria-label="Ten alternative palettes" id="gallery"></section>
+<footer><p>Local color studies. The published profile is unchanged.</p><a href="multicolor.html">Previous proposals</a></footer>
+</main>
+<script>
+(async()=>{
+const [palettes,ids]=await Promise.all([fetch('palettes.json').then(r=>r.json()),fetch('round-3.json').then(r=>r.json())]);
+const query=new URLSearchParams(location.search);
+let theme=query.get('theme')==='light'?'light':'dark';
+let selected=ids.includes(query.get('palette'))?query.get('palette'):'all';
+const select=document.querySelector('#palette'),gallery=document.querySelector('#gallery');
+ids.forEach((id,index)=>{
+ const p=palettes[id],name=`${String(index+1).padStart(2,'0')} / ${p.name}`;
+ const option=document.createElement('option');option.value=id;option.textContent=name;select.append(option);
+ const card=document.createElement('article');card.dataset.palette=id;
+ card.innerHTML=`<div class="caption"><div><h2>${name}</h2><p>${p.description}</p><div class="swatches" aria-hidden="true"></div></div><button class="inspect" data-inspect="${id}" aria-label="Inspect ${p.name}">Inspect</button></div><picture><source media="(max-width:740px)"><img width="1080" height="860" alt="Toolkit profile in the ${p.name} palette. Portrait and layout unchanged; radar values are illustrative."></picture>`;
+ gallery.append(card);
+});
+function render(){
+ document.documentElement.dataset.theme=theme;
+ document.querySelector('main').dataset.view=selected==='all'?'all':'single';
+ select.value=selected;
+ document.querySelector('#compare').setAttribute('aria-pressed',selected==='all');
+ document.querySelectorAll('button[data-theme]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.theme===theme));
+ document.querySelectorAll('article').forEach(card=>{
+  const id=card.dataset.palette;card.hidden=selected!=='all'&&id!==selected;
+  card.querySelector('source').srcset=`palettes/${id}-${theme}-mobile.svg`;
+  card.querySelector('img').src=`palettes/${id}-${theme}.svg`;
+  card.querySelector('.inspect').hidden=selected!=='all';
+  card.querySelector('.swatches').innerHTML=['heading','label','value','trace'].map(role=>`<i style="--swatch:${palettes[id][theme][role]}"></i>`).join('');
+ });
+ history.replaceState(null,'',`${location.pathname}?${new URLSearchParams({theme,palette:selected})}`);
+}
+select.addEventListener('change',()=>{selected=select.value;render()});
+document.querySelector('#compare').addEventListener('click',()=>{selected='all';render()});
+document.querySelectorAll('[data-inspect]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.inspect;render();window.scrollTo(0,0)}));
+document.querySelectorAll('button[data-theme]').forEach(b=>b.addEventListener('click',()=>{theme=b.dataset.theme;render()}));
+render();
+})().catch(()=>{document.querySelector('#gallery').textContent='Could not load palettes. Reload this local preview.'});
+</script>
+</html>
