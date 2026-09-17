@@ -22,7 +22,7 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 - To rebuild the historical local galleries, run `python3 scripts/build_radar_previews.py` and `python3 scripts/build_radar_layouts.py`. Generated exploration assets are ignored; gallery sources remain reproducible.
 
 ## Current status and recent changes
-The user accepted Coral and the grayscale light portrait, and authorized publication on 2026-09-16 after adjusting the radar. Scores are Local AI 92, Data analysis 80, Native apps 58, Automation 82, AI research 72 and Multimodal AI 88. They remain labeled illustrative, not measured skills or GitHub statistics. The main assets now contain the approved layout and radar. Building includes Local AI tools and Native macOS apps; the former issue-scout reference is removed.
+The user accepted Coral and the grayscale light portrait, and authorized publication on 2026-09-16 after adjusting the radar. Scores are Local AI 92, Data analysis 80, Native apps 58, Automation 82, AI research 77 and Multimodal AI 88. The user selected these profile focus values and requested removing the illustrative caption on 2026-09-17. The main assets now contain the approved layout and radar. Building includes Local AI tools and Native macOS apps; the former issue-scout reference is removed.
 
 The user-supplied dark portrait remains unchanged. The light portrait uses shadow-dense ASCII characters with neutral grayscale ink and stronger glyphs in deep shadows. Copying the dark character grid into black ink on white was rejected because it looked like a negative. A pale light conversion was also rejected. Both generators share portrait_row to keep the accepted rendering consistent.
 
@@ -44,7 +44,10 @@ Validation before publication: all four final SVGs parse, have unique IDs and th
 - Add yellow, orange or green accents to the selected Coral card.
 - Reintroduce gh-issue-scout references.
 - Add fake statistics, invented interests, badges, counters or unrelated widgets.
-- Treat the illustrative radar as measured skills or live GitHub statistics.
+- Describe the user-selected radar values as measured skills or live GitHub statistics.
 - Add a solid card background, filled radar texture, vertex stars, sidebar bars or uneven Braille spacing.
 - Return to a centered radar alone below the desktop profile.
 - Publish the original photo, ignored local files or generated rejected design galleries.
+
+## Score update, 2026-09-17
+AI research is now 77. The user requested publication and removal of the visible illustrative caption. Braille SVG titles, descriptions and README alt text now describe profile focus values. The layout and remaining scores are unchanged.

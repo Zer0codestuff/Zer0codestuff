@@ -227,8 +227,8 @@ def build_braille(theme, axes, grid, mobile):
     w, h = (440, 410) if mobile else (600, 490)
     desc = "; ".join(f'{a["label"]}: {a["value"]}/100' for a in axes)
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-labelledby="title desc">',
-             '<title id="title">Braille focus radar | Illustrative values</title>',
-             f'<desc id="desc">Demonstration only, not measured skills. {escape(desc)}. Rings at 25, 50, 75 and 100.</desc>',
+             '<title id="title">Braille focus radar</title>',
+             f'<desc id="desc">Profile focus. {escape(desc)}. Rings at 25, 50, 75 and 100.</desc>',
              '<g font-family="Menlo,Consolas,monospace" style="font-variant-ligatures:none">']
     if mobile:
         parts += ['<g transform="translate(16 4) scale(.68)">', grid.svg(p, dot_size=16), '</g>']
@@ -248,7 +248,7 @@ def build_braille(theme, axes, grid, mobile):
             parts.append(text(x, y, line, p["text"], 15 if mobile else 16, anchor))
             y += 18
         parts.append(text(x, y, f'{axis["value"]}/100', p["muted"], 14, anchor))
-    parts += [text(w/2, h-12, "Illustrative values", p["muted"], 11, "middle"), '</g></svg>']
+    parts += ['</g></svg>']
     return "\n".join(parts) + "\n"
 
 

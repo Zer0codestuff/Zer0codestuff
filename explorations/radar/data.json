@@ -1,5 +1,5 @@
 {
-  "status": "Illustrative values. Not measured skills or GitHub statistics.",
+  "status": "User-selected profile focus values.",
   "scale": 100,
   "axes": [
     {
@@ -20,7 +20,7 @@
     },
     {
       "label": "AI research",
-      "value": 72
+      "value": 77
     },
     {
       "label": "Multimodal AI",

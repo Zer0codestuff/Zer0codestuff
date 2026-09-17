@@ -32,7 +32,7 @@ class Card:
             self.c.update(PALETTES[palette][theme])
         self.parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
             f'<title id="title">{escape(NAMES[name])} | Gabriele Monni</title>',
-            '<desc id="desc">Local layout proposal with the existing ASCII portrait, confirmed profile information and the Braille radar. Radar values are illustrative, not measured skills.</desc>',
+            '<desc id="desc">Local layout proposal with the existing ASCII portrait, confirmed profile information and the Braille radar. Profile focus values selected by Gabriele Monni.</desc>',
             f'<g font-family="Menlo,Consolas,monospace" font-weight="{600 if self.strong_light else 400}" style="font-variant-ligatures:none">']
 
     def text(self, x, y, value, role='text', size=14, anchor='start'):
