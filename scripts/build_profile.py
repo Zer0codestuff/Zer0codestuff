@@ -137,7 +137,7 @@ class Card:
         self.css.append(keyframes('nm', [(at, f'translateX({(col - n) * cw:.1f}px)') for at, col in moves], 'transform', enter,
                                   'translateX(0px)')
                         + keyframes('nb', blinking([(0, INTRO['idle'])], enter), 'opacity', enter, 0)
-                        + f'.ncur{{animation:nm {enter:.2f}s step-end both,nb {enter:.2f}s step-end both}}')
+                        + f'.ncur{{animation:nm {enter:.2f}s step-end backwards,nb {enter:.2f}s step-end backwards}}')
         return enter
 
     def typed_prompt(self, x, y, runs, size=13, delay=0):
@@ -283,10 +283,13 @@ class Card:
             self.text(lx, round(ly + size * 1.3, 1), str(ax['value']), 'label', size, 400, anchor)
 
     def svg(self, title, desc):
+        # Hide during the delay only. A forwards fill can retain opacity 0 when
+        # floating-point rounding puts a finished step-end effect just below 100%.
+        # Once the reveal ends, the normal (visible) SVG state must take over.
         style = ('<style>' + font_faces()
                  + f'text{{font-family:{FAMILY};font-variant-ligatures:none}}'
                  + ''.join(self.css)
-                 + '.r{animation:on .01s step-end both}@keyframes on{from{opacity:0}to{opacity:1}}'
+                 + '.r{animation:on .01s step-end backwards}@keyframes on{from{opacity:0}to{opacity:1}}'
                  + '@media (prefers-reduced-motion:reduce){.r,.tk,.tcur,.ncur{animation:none}}</style>')
         head = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{self.height}" '
                 f'viewBox="0 0 {self.width} {self.height}" role="img" aria-labelledby="title desc">'
