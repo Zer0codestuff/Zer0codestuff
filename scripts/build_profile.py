@@ -19,17 +19,18 @@ ADVANCE = .6  # JetBrains Mono advance width, in em
 FAMILY = "JBM,'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
 
 THEMES = {
+    # Azzurri: Italian green, white and red with an azzurro radar. The portrait stays neutral.
     'dark': {
         'page': '#0d1117', 'ink': '#ffffff',
-        'accent': '#e86d7d', 'label': '#8cbfff', 'value': '#e2e6ee',
-        'muted': '#8b949e', 'faint': '#484f58', 'grid': '#454d58', 'trace': '#8cbfff',
-        'blocks': ['#e86d7d', '#b8475a', '#8cbfff', '#4f86c6', '#e2e6ee', '#8b949e', '#484f58', '#21262d'],
+        'accent': '#4cd17f', 'label': '#ff6b6b', 'value': '#f2f2f2',
+        'muted': '#9aa0a6', 'faint': '#4a4e54', 'grid': '#3a404a', 'trace': '#4fa8ff',
+        'blocks': ['#3fbf6a', '#3fbf6a', '#f2f2f2', '#f2f2f2', '#ff5a5a', '#ff5a5a', '#4fa8ff', '#4fa8ff'],
     },
     'light': {
         'page': '#ffffff', 'ink': '#111111',
-        'accent': '#a3243c', 'label': '#123f78', 'value': '#101820',
-        'muted': '#46515e', 'faint': '#8c959f', 'grid': '#a3adb8', 'trace': '#0b4fa3',
-        'blocks': ['#a3243c', '#d9566d', '#123f78', '#4f86c6', '#101820', '#46515e', '#8c959f', '#d0d7de'],
+        'accent': '#0f7a3a', 'label': '#c62828', 'value': '#151515',
+        'muted': '#595959', 'faint': '#a0a0a0', 'grid': '#cccccc', 'trace': '#0b63c4',
+        'blocks': ['#0f9a48', '#0f9a48', '#e8e8e8', '#e8e8e8', '#d32f2f', '#d32f2f', '#0b63c4', '#0b63c4'],
     },
 }
 
@@ -71,7 +72,7 @@ class Card:
     def prompt(self, x, y, command, size=13, cursor=False):
         p = self.profile
         runs = [(p['user'], 'accent', 700), ('@', 'muted', 400), (p['handle'], 'accent', 700),
-                (' ~ ', 'label', 400), ('% ', 'muted', 400), (command, 'value', 400)]
+                (' ~ ', 'trace', 400), ('% ', 'muted', 400), (command, 'value', 400)]
         self.spans(x, y, runs, size)
         if cursor:
             cx = x + sum(len(t) for t, _, _ in runs) * size * ADVANCE
@@ -234,13 +235,14 @@ def desktop(theme, p):
     # Two columns: ASCII visuals on the left, the neofetch text on the right.
     c = Card(theme, 880, 0, p)
     c.prompt(8, 20, 'neofetch')
-    h = c.portrait(204, 48, 372)
+    h = c.portrait(204, 48, 280)
     x = 420
-    y = identity(c, x, 80, p)
-    y = project_list(c, x, y + 56, 'Building now', p['building'], gap=48)
+    sections = identity(c, x, 80, p) + 56
+    y = project_list(c, x, sections, 'Building now', p['building'], gap=48)
     y = project_list(c, x, y + 12, 'Selected work', p['work'], gap=48)
+    # Focus lines up with Building now unless the portrait reaches lower.
     # The closing prompt sits below whichever column ends lower.
-    end = max(focus(c, 8, 204, 48 + h + 34, p), y + 12)
+    end = max(focus(c, 8, 204, max(48 + h + 34, sections), p), y + 12)
     c.prompt(8, end, '', cursor=True)
     c.height = round(end + 16)
     return c.svg(f'{p["name"]} | {p["info"][0][1]}', description(p))
@@ -249,7 +251,7 @@ def desktop(theme, p):
 def mobile(theme, p):
     c = Card(theme, 400, 0, p)
     c.prompt(20, 24, 'neofetch', 12)
-    h = c.portrait(200, 48, 336)
+    h = c.portrait(200, 48, 252)
     x = 20
     y = identity(c, x, 48 + h + 44, p)
     y = project_list(c, x, y + 56, 'Building now', p['building'])

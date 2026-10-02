@@ -1,7 +1,7 @@
 # GitHub profile Neofetch
 
 ## Purpose and architecture
-Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python generates four transparent SVG cards: desktop/mobile in dark/light. The card reads as `neofetch` output: an ASCII portrait and a dotted focus radar on the left, the name, info rows, tagline, color blocks and projects on the right. Coral palette. No hosted backend or website framework.
+Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python generates four transparent SVG cards: desktop/mobile in dark/light. The card reads as `neofetch` output: an ASCII portrait and a dotted focus radar on the left, the name, info rows, tagline, color blocks and projects on the right. Azzurri palette. No hosted backend or website framework.
 
 - `profile.json`: all card text, projects and the six focus values (0 to 100).
 - `assets/portrait-{dark,light}.txt`: 56 x 41 glyph grids on the classic ramp ` .:-=+*#%@`.
@@ -23,21 +23,22 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 - GitHub serves SVGs with `default-src 'none'`. The embedded data URI fonts still load in Chrome, Firefox and WebKit under that policy (tested locally on 2026-10-02). Fallback fonts keep the layout because portrait rows use `textLength`.
 
 ## Current status
-Full redesign on 2026-10-02, at the user's request, replacing the previous Coral Toolkit card. The user approved a 44-column classic portrait and asked to publish it the same day. Later on 2026-10-02 the user compared it with the original 68-column portrait, picked the 56-column middle ground (M1, same classic ramp) and raised Native apps from 58 to 72. The user then reported one eye looking closed; fixed with eye balancing and a 6 px crop shift. Published in commit 48ca328 and checked on the live profile (dark desktop). Right after a push, github.com/.../raw/ URLs can return 504 for a few minutes and browsers may cache the broken image: reload before debugging.
+Full redesign on 2026-10-02, at the user's request, replacing the previous Coral Toolkit card. The user approved a 44-column classic portrait and asked to publish it the same day. Later on 2026-10-02 the user compared it with the original 68-column portrait, picked the 56-column middle ground (M1, same classic ramp) and raised Native apps from 58 to 72. The user then reported one eye looking closed; fixed with eye balancing and a 6 px crop shift. The user then shrank the portrait to 280 px wide (252 on mobile) and picked the Azzurri palette over Coral and six other red, green and blue palettes (GitHub, One Dark, ANSI, Pastel, Neon, Terra), keeping the portrait neutral. Published in commit 48ca328 and checked on the live profile (dark desktop). Right after a push, github.com/.../raw/ URLs can return 504 for a few minutes and browsers may cache the broken image: reload before debugging.
 
 - New portrait conversion from the original photo: 56 columns, ten tones, fully opaque glyphs. A first 70-column photographic version was rejected as too detailed; the coarse one keeps brows, eyes, nose, beard and the hair silhouette readable while looking like ASCII art.
-- New layout: portrait and radar in the left column, all text in the right column. The portrait uses the text glyph size when it fits. The closing prompt sits below whichever column ends lower; desktop is 880 x 834, mobile 400 x 1540.
+- New layout: portrait and radar in the left column, all text in the right column. The portrait is 280 px wide on desktop. Focus lines up with Building now unless the portrait reaches lower, and the closing prompt sits below whichever column ends lower; desktop is 880 x 828, mobile 400 x 1448.
 - New content from gabrielemonni.me and public repos, checked on 2026-10-02: info rows (role, work, study, base, code, stack, languages, web), the site tagline, Building now (WhisperDrop, AgentFiles, DwarfStar) and Selected work (MUVAD, AI Capability Signals, Video Edit Checker).
 - Radar values: Local AI 92, Data analysis 80, Native apps 72, Automation 82, AI research 77, Multimodal AI 88. Same principle as the approved Braille radar: one square dot lattice, explicitly positioned glyphs, open contour, no fill. Dots are now the font's `·` and `•` because JetBrains Mono has no Braille block.
 - A blinking cursor on the closing prompt is the only animation. A line-by-line reveal was tried and dropped: renderers that capture the first frame showed an empty card.
-- Coral kept. The light accent moved from #781b30 to #a3243c so headings read as coral rather than wine.
+- Azzurri palette: green headings and prompt, red labels and radar scores, white values, an azzurro radar contour and prompt path. The color blocks read as the Italian flag plus azzurro. Earlier bolder studies (amber, phosphor, lolcat and gradient portraits) were declined.
 - Removed the old generators (`build_neofetch.py`, `build_radar_*.py`) and `explorations/`. They remain in git history.
 
 ## Preferences and constraints
 - English artifacts. No em dashes. Apply the unslop skill to prose.
 - Monochrome portrait, coarse and simple: visible ASCII glyphs and a recognizable face, never photographic.
 - Transparent SVG backgrounds. Preview backgrounds are GitHub dark #0d1117 and white.
-- Coral: coral headings, blue labels and radar, neutral values. Light mode needs strong text and visible radar rings.
+- Azzurri: green headings, red labels, neutral values, azzurro radar. Light mode needs strong text and visible radar rings.
+- The portrait stays neutral: white on dark, near-black on light. No tinted or gradient portrait.
 - Radar values are focus values the user chose. Never present them as measured skills or live GitHub statistics.
 - Local QA, the original photo, masks and backups stay outside version control.
 - Trailing spaces in portrait grids are intentional fixed-width padding.
@@ -45,8 +46,8 @@ Full redesign on 2026-10-02, at the user's request, replacing the previous Coral
 
 ## Do not
 - Reintroduce an inverted dark face or the dark grid printed as black on white.
-- Return to pale light portraits or faint Coral light text and radar.
-- Add yellow, orange or green accents to the Coral card.
+- Return to pale light portraits or faint light-theme text and radar.
+- Add yellow or orange accents to the Azzurri card.
 - Reintroduce gh-issue-scout references.
 - Add fake statistics, invented interests, badges, counters or unrelated widgets.
 - Add a solid card background, filled radar texture, vertex stars, sidebar bars or uneven dot spacing.
