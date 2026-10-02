@@ -10,6 +10,8 @@ from math import cos, pi, sin
 import base64
 import json
 import random
+import re
+import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets'
@@ -370,6 +372,15 @@ def mobile(theme, p):
     return c.svg(f'{p["name"]} | {p["info"][0][1]}', description(p))
 
 
+def stamp_readme():
+    """Add a content hash to each card URL in README.md, so browsers and GitHub's
+    five minute image cache cannot keep showing an old card after an update."""
+    readme = ROOT / 'README.md'
+    def versioned(match):
+        return f'assets/{match[1]}?v={zlib.crc32((ASSETS / match[1]).read_bytes()):08x}'
+    readme.write_text(re.sub(r'assets/(profile-[a-z-]+\.svg)(?:\?v=[0-9a-f]+)?', versioned, readme.read_text()))
+
+
 def main():
     profile = json.loads((ROOT / 'profile.json').read_text())
     for theme in THEMES:
@@ -377,6 +388,7 @@ def main():
             path = ASSETS / f'profile-{theme}{name}.svg'
             path.write_text(render(theme, profile))
             print(path.relative_to(ROOT))
+    stamp_readme()
 
 
 if __name__ == '__main__':

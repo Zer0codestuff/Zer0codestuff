@@ -15,7 +15,7 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 - `preview.html`: the README picture plus all four assets side by side.
 
 ## Build and validation
-- `python3 scripts/build_profile.py`, then `python3 scripts/check_cards.py`.
+- `python3 scripts/build_profile.py`, then `python3 scripts/check_cards.py`. The build also stamps README.md image URLs with `?v=<crc32>` of each card, so browsers and GitHub's 5 minute image cache cannot keep serving an old card. Commit README.md together with the cards.
 - Portrait from the photo: `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`, then `.venv/bin/python scripts/portrait.py --photo /absolute/path/to/photo.jpg`, then rebuild. The crop targets the supplied upright photo. Keep the photo outside the repository; masks are cached in ignored `.local/portrait-cache`.
 - The conversion relights the shadowed half of the face from its mirror image, then gives both eye openings (Vision eye outlines) the same darkness, because relighting had lifted the shadowed eye until it read as closed. The crop's top edge keeps both eyes inside one glyph row. It then softens the photo, maps tone per theme with moderate local contrast, then quantizes each cell to one of ten glyphs, all fully opaque. Dark: glyph density follows skin brightness, hair keeps a faint floor. Light: ink follows darkness, and a faint dot marks the pale sweater so the shoulders keep their outline.
 - The body in the photo is turned slightly, so the bust leaned right of the chin. Below the chin the tone and mask are mirrored around the chin's vertical axis (`BUST_BLEND`), and the vignette is centered on that axis. Keep this; without it the user sees the body as crooked.
