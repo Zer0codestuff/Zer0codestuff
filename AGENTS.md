@@ -23,7 +23,7 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 - GitHub serves SVGs with `default-src 'none'`. The embedded data URI fonts still load in Chrome, Firefox and WebKit under that policy (tested locally on 2026-10-02). Fallback fonts keep the layout because portrait rows use `textLength`.
 
 ## Current status
-Full redesign on 2026-10-02, at the user's request, replacing the previous Coral Toolkit card. The user approved the 44-column classic portrait and asked to publish it the same day.
+Full redesign on 2026-10-02, at the user's request, replacing the previous Coral Toolkit card. The user approved the 44-column classic portrait and asked to publish it the same day. Published in commit 48ca328 and checked on the live profile (dark desktop). Right after a push, github.com/.../raw/ URLs can return 504 for a few minutes and browsers may cache the broken image: reload before debugging.
 
 - New portrait conversion from the original photo: 44 columns, large glyphs, ten tones. A first 70-column photographic version was rejected as too detailed; the coarse one keeps brows, eyes, nose, beard and the hair silhouette readable while looking like ASCII art.
 - New layout: portrait and radar in the left column, all text in the right column. The portrait uses the text glyph size when it fits. The closing prompt sits below whichever column ends lower; desktop is 880 x 844, mobile 400 x 1552.
