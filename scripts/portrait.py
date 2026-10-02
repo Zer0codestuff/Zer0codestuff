@@ -42,7 +42,10 @@ TONE = {
 EYE_DEPTH = .7
 FADE_START, FADE_POWER = .62, 2.0
 # Soft elliptical falloff that rounds off the shoulders: center and radii in crop units.
+# The horizontal center follows the chin.
 VIGNETTE = (.5, .36, .78, .74, .3)
+# Bust symmetry starts half a row above the chin and is complete three rows later.
+BUST_BLEND = (.5, 3)
 
 
 def blur(a, sigma):
@@ -86,6 +89,8 @@ def load(photo):
     mask = np.maximum(subject, np.clip((person - .35) / .5, 0, 1) * .8)
     face = json.loads((cache / 'face.json').read_text())
     points = {k: np.array(face[k]) * scale for k in ('leftPupil', 'rightPupil', 'leftEye', 'rightEye')}
+    # The median line ends at the chin.
+    points['chin'] = np.array(face['medianLine'][-1]) * scale
     return lum, mask, points
 
 
@@ -120,10 +125,11 @@ def balance_eyes(lum, face):
     return lum
 
 
-def tone(lum, mask, theme, cols, rows, ch):
+def tone(lum, mask, face, theme, cols, rows, ch):
     """Ink amount per pixel, 0 to 1, for one theme."""
     W, H = cols * CELL_W, rows * ch
     x0, y0, x1, y1 = CROP
+    axis = (face['chin'][0] - x0) / (x1 - x0)
     lum = resize(lum[y0:y1, x0:x1], (W, H))
     mask = np.clip(resize(mask[y0:y1, x0:x1], (W, H)), 0, 1)
     soft = np.clip(mask, 1e-3, 1)
@@ -138,9 +144,17 @@ def tone(lum, mask, theme, cols, rows, ch):
     else:
         b = np.clip((t['hi'] - mixed) / span, 0, 1)
         out = t['floor'] + (1 - t['floor']) * b ** t['gamma'] - t['detail'] * (lum - base)
+    # The body is turned a little in the photo, so the bust leaned right of the chin.
+    # Below the chin, mirror it around the chin's vertical axis: centered, level shoulders.
+    chin = (face['chin'][1] - y0) / (y1 - y0) * H
+    mirror = np.clip(np.round(2 * axis * W - np.arange(W)).astype(int), 0, W - 1)
+    w = np.clip((np.arange(H)[:, None] - chin + BUST_BLEND[0] * ch) / (BUST_BLEND[1] * ch), 0, 1)
+    out = out * (1 - w) + (out + out[:, mirror]) / 2 * w
+    mask = mask * (1 - w) + np.minimum(mask, mask[:, mirror]) * w
     yy = np.linspace(0, 1, H)[:, None]
     xx = np.linspace(0, 1, W)[None, :]
-    vx, vy, rx, ry, falloff = VIGNETTE
+    _, vy, rx, ry, falloff = VIGNETTE
+    vx = axis
     oval = np.clip((1 - np.sqrt(((xx - vx) / rx) ** 2 + ((yy - vy) / ry) ** 2)) / falloff, 0, 1)
     drop = np.clip((1 - yy) / (1 - FADE_START), 0, 1)
     fade = drop ** FADE_POWER * oval
@@ -160,7 +174,7 @@ def main():
     ch = round(CELL_W * pitch / .6)
     rows = round(cols * (CROP[3] - CROP[1]) / (CROP[2] - CROP[0]) * .6 / pitch)
     for theme in ('dark', 'light'):
-        cells = tone(lum, mask, theme, cols, rows, ch).reshape(rows, ch, cols, CELL_W).mean(axis=(1, 3))
+        cells = tone(lum, mask, face, theme, cols, rows, ch).reshape(rows, ch, cols, CELL_W).mean(axis=(1, 3))
         level = np.clip(np.round(cells * (len(RAMP) - 1)), 0, len(RAMP) - 1).astype(int)
         text = '\n'.join(''.join(RAMP[v] for v in row) for row in level) + '\n'
         (ROOT / 'assets' / f'portrait-{theme}.txt').write_text(text)
