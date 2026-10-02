@@ -11,7 +11,7 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 - `scripts/portrait.py`: optional photo to grid conversion (macOS, Pillow, NumPy).
 - `scripts/segment_photo.swift`: Vision subject mask, person mask and pupils for the conversion.
 - `scripts/subset_fonts.py`: optional. Rebuilds the font subsets with fonttools.
-- `README.md`: picture sources pick theme and viewport (mobile at 600px and below). Real contact links sit below the card.
+- `README.md`: picture sources pick theme and viewport (mobile at 600px and below). The whole card links to gabrielemonni.me. Nothing else sits below it: the user wants only the terminal card (contact links removed on 2026-10-02).
 - `preview.html`: the README picture plus all four assets side by side.
 
 ## Build and validation

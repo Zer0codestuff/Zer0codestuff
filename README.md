@@ -6,5 +6,3 @@
     <img src="assets/profile-light.svg" width="880" alt="Neofetch-style card for Gabriele Monni: an ASCII portrait, software engineer and IT Technical Officer in Cagliari, studying for an MSc in Computer Science with an Applied AI track. Python, TypeScript, Swift and SQL. Building WhisperDrop, AgentFiles and DwarfStar. Selected work: MUVAD, AI Capability Signals and Video Edit Checker. A radar shows focus values chosen by Gabriele: Local AI 92, Data analysis 80, Native apps 72, Automation 82, AI research 77, Multimodal AI 88.">
   </picture>
 </a>
-
-[Website](https://gabrielemonni.me) · [LinkedIn](https://www.linkedin.com/in/hire-gabriele-monni) · [Email](mailto:monnigabriele14@gmail.com)
