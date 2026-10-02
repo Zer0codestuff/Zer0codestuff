@@ -4,19 +4,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gabriele Monni | GitHub profile preview</title>
 <style>
-:root { color-scheme: light dark; }
+:root { color-scheme: light dark; font: 14px/1.5 ui-monospace, Menlo, monospace; }
 * { box-sizing: border-box; }
-body { margin: 0; background: #fff; }
-@media (prefers-color-scheme: dark) { body { background: #0d1117; } }
-main { max-width: 1080px; margin: 0 auto; }
-picture, img { display: block; width: 100%; height: auto; }
+body { margin: 0; background: #fff; color: #1f2328; }
+@media (prefers-color-scheme: dark) { body { background: #0d1117; color: #e6edf3; } }
+main { max-width: 846px; margin: 32px auto; padding: 0 16px; }
+picture, img { display: block; max-width: 100%; height: auto; }
+h2 { font-size: 13px; font-weight: 600; margin: 48px 0 8px; opacity: .7; }
+.grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; max-width: none; }
+.tile { padding: 16px; border-radius: 6px; }
+.dark { background: #0d1117; }
+.light { background: #fff; outline: 1px solid #d0d7de; }
 </style>
 <main>
-<picture>
-<source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/profile-dark-mobile.svg">
-<source media="(prefers-color-scheme: dark)" srcset="assets/profile-dark.svg">
-<source media="(max-width: 600px)" srcset="assets/profile-light-mobile.svg">
-<img src="assets/profile-light.svg" alt="ASCII portrait of Gabriele Monni with his software engineering profile." width="1080" height="860">
-</picture>
+  <!-- Same markup as README.md: follows the system theme and the window width. -->
+  <picture>
+    <source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/profile-dark-mobile.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/profile-dark.svg">
+    <source media="(max-width: 600px)" srcset="assets/profile-light-mobile.svg">
+    <img src="assets/profile-light.svg" width="880" alt="Profile card preview">
+  </picture>
+</main>
+<main class="grid">
+  <h2 style="width:100%">All four assets</h2>
+  <div class="tile dark"><img src="assets/profile-dark.svg" width="846" alt="Dark desktop"></div>
+  <div class="tile light"><img src="assets/profile-light.svg" width="846" alt="Light desktop"></div>
+  <div class="tile dark"><img src="assets/profile-dark-mobile.svg" width="390" alt="Dark mobile"></div>
+  <div class="tile light"><img src="assets/profile-light-mobile.svg" width="390" alt="Light mobile"></div>
 </main>
 </html>
