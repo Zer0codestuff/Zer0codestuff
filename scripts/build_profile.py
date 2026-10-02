@@ -9,6 +9,7 @@ from html import escape
 from math import cos, pi, sin
 import base64
 import json
+import random
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets'
@@ -17,6 +18,8 @@ ASSETS = ROOT / 'assets'
 PORTRAIT = {'cols': 56, 'size': 14, 'pitch': 1.0, 'weight': 700}
 ADVANCE = .6  # JetBrains Mono advance width, in em
 FAMILY = "JBM,'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
+# Closing prompt: idle before typing, hold once typed, idle after erasing (seconds).
+TYPING = {'start': 1.2, 'hold': 6.5, 'rest': .6, 'erase': .035, 'seed': 7}
 
 THEMES = {
     # Azzurri: Italian green, white and red with an azzurro radar. The portrait stays neutral.
@@ -55,7 +58,7 @@ class Card:
     def __init__(self, theme, width, height, profile):
         self.c = THEMES[theme]
         self.theme, self.width, self.height, self.profile = theme, width, height, profile
-        self.parts = []
+        self.parts, self.css = [], []
 
     def text(self, x, y, content, role='value', size=14, weight=400, anchor='start'):
         attrs = f' font-weight="{weight}"' if weight != 400 else ''
@@ -69,15 +72,65 @@ class Card:
             for t, role, w in runs)
         self.parts.append(f'<text x="{x:g}" y="{y:g}" font-size="{size}">{body}</text>')
 
-    def prompt(self, x, y, command, size=13, cursor=False):
+    def prompt_runs(self, command=''):
         p = self.profile
-        runs = [(p['user'], 'accent', 700), ('@', 'muted', 400), (p['handle'], 'accent', 700),
+        return [(p['user'], 'accent', 700), ('@', 'muted', 400), (p['handle'], 'accent', 700),
                 (' ~ ', 'trace', 400), ('% ', 'muted', 400), (command, 'value', 400)]
-        self.spans(x, y, runs, size)
-        if cursor:
-            cx = x + sum(len(t) for t, _, _ in runs) * size * ADVANCE
-            self.parts.append(f'<rect class="cursor" x="{cx:.1f}" y="{y - size * .78:.1f}" '
-                              f'width="{size * ADVANCE:.1f}" height="{size * .98:.1f}" fill="{self.c["value"]}"/>')
+
+    def prompt(self, x, y, command, size=13):
+        self.spans(x, y, self.prompt_runs(command), size)
+
+    def typed_prompt(self, x, y, runs, size=13):
+        """A prompt where someone types `runs` ((text, role) pairs), waits, erases it and starts over.
+
+        Static renderers and reduced motion show the whole command with the cursor after it.
+        """
+        self.prompt(x, y, '', size)
+        cw = size * ADVANCE
+        x0 = x + sum(len(t) for t, _, _ in self.prompt_runs()) * cw
+        chars = [(ch, role) for text, role in runs for ch in text]
+        n = len(chars)
+        # Human rhythm: uneven keystrokes, a beat after spaces, a pause before a comment.
+        rng = random.Random(TYPING['seed'])
+        t, shown = TYPING['start'], []
+        for ch, _ in chars:
+            t += .45 if ch == '#' else 0
+            shown.append(t)
+            t += .05 + rng.random() * .08 + (.07 if ch == ' ' else 0)
+        typed = shown[-1]
+        erase = typed + TYPING['hold']
+        gone = [erase + (n - 1 - i) * TYPING['erase'] for i in range(n)]
+        cleared = erase + n * TYPING['erase']
+        cycle = cleared + TYPING['rest']
+
+        def keyframes(name, events, prop):
+            frames = ''.join(f'{100 * at / cycle:.3f}%{{{prop}:{value}}}' for at, value in events)
+            return f'@keyframes {name}{{{frames}100%{{{prop}:{events[0][1]}}}}}'
+
+        css = []
+        for i, (ch, role) in enumerate(chars):
+            if ch == ' ':
+                continue
+            self.parts.append(f'<text class="tk k{i}" x="{x0 + i * cw:.1f}" y="{y:g}" font-size="{size}" '
+                              f'fill="{self.c[role]}">{enc(ch)}</text>')
+            css.append(f'.k{i}{{animation:k{i} {cycle:.2f}s step-end infinite}}'
+                       + keyframes(f'k{i}', [(0, 0), (shown[i], 1), (gone[i], 0)], 'opacity'))
+        # The cursor sits after the full command; the animation moves it back to where typing is.
+        moves = sorted([(0, 0)] + [(at, i + 1) for i, at in enumerate(shown)] + [(at, i) for i, at in enumerate(gone)])
+        css.append(keyframes('cm', [(at, f'translateX({(col - n) * cw:.1f}px)') for at, col in moves], 'transform'))
+        # Solid while keys are pressed, blinking while idle.
+        blink = []
+        for start, end in ((0, TYPING['start']), (typed + .05, erase), (cleared, cycle)):
+            at, on = start, 1
+            while at < end - 1e-6:
+                blink.append((at, on))
+                at, on = at + .53, 1 - on
+            if end < cycle:
+                blink.append((end, 1))
+        css.append(keyframes('cb', blink, 'opacity'))
+        self.parts.append(f'<rect class="tcur" x="{x0 + n * cw:.1f}" y="{y - size * .78:.1f}" width="{cw:.1f}" '
+                          f'height="{size * .98:.1f}" fill="{self.c["value"]}"/>')
+        self.css.append(''.join(css) + f'.tcur{{animation:cm {cycle:.2f}s step-end infinite,cb {cycle:.2f}s step-end infinite}}')
 
     def heading(self, x, y, title, size=14):
         self.text(x, y, title, 'accent', size, 700)
@@ -179,8 +232,8 @@ class Card:
     def svg(self, title, desc):
         style = ('<style>' + font_faces()
                  + f'text{{font-family:{FAMILY};font-variant-ligatures:none}}'
-                 + '.cursor{animation:blink 1.2s steps(1) infinite}@keyframes blink{50%{opacity:0}}'
-                 + '@media (prefers-reduced-motion:reduce){.cursor{animation:none}}</style>')
+                 + ''.join(self.css)
+                 + '@media (prefers-reduced-motion:reduce){.tk,.tcur{animation:none}}</style>')
         head = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{self.height}" '
                 f'viewBox="0 0 {self.width} {self.height}" role="img" aria-labelledby="title desc">'
                 f'<title id="title">{escape(title)}</title><desc id="desc">{escape(desc)}</desc>{style}')
@@ -192,7 +245,8 @@ def description(p):
     projects = '; '.join(f'{name}: {desc}' for name, desc in p['building'] + p['work'])
     info = ' '.join(f'{k}: {v}.' for k, v in p['info'])
     return (f'Neofetch-style card with an ASCII portrait of {p["name"]}. {info} {" ".join(p["tagline"])} '
-            f'Projects. {projects}. Focus radar with values {p["name"].split()[0]} chose, out of 100: {focus}.')
+            f'Projects. {projects}. Focus radar with values {p["name"].split()[0]} chose, out of 100: {focus}. '
+            f'The last prompt types: {"".join(t for t, _ in p["typing"]["desktop"])}. The card links to {p["website"]}.')
 
 
 def info_block(card, x, y, p, size=14, step=24):
@@ -243,7 +297,7 @@ def desktop(theme, p):
     # Focus lines up with Building now unless the portrait reaches lower.
     # The closing prompt sits below whichever column ends lower.
     end = max(focus(c, 8, 204, max(48 + h + 34, sections), p), y + 12)
-    c.prompt(8, end, '', cursor=True)
+    c.typed_prompt(8, end, p['typing']['desktop'])
     c.height = round(end + 16)
     return c.svg(f'{p["name"]} | {p["info"][0][1]}', description(p))
 
@@ -257,7 +311,7 @@ def mobile(theme, p):
     y = project_list(c, x, y + 56, 'Building now', p['building'])
     y = project_list(c, x, y + 12, 'Selected work', p['work'])
     end = focus(c, x, 200, y + 26, p)
-    c.prompt(x, end, '', 12, cursor=True)
+    c.typed_prompt(x, end, p['typing']['mobile'], 12)
     c.height = round(end + 18)
     return c.svg(f'{p["name"]} | {p["info"][0][1]}', description(p))
 
