@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'assets'
 
 # Portrait grid geometry, shared with scripts/portrait.py. Size is in px at natural width.
-PORTRAIT = {'cols': 44, 'size': 14, 'pitch': 1.0, 'weight': 700}
+PORTRAIT = {'cols': 56, 'size': 14, 'pitch': 1.0, 'weight': 700}
 ADVANCE = .6  # JetBrains Mono advance width, in em
 FAMILY = "JBM,'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
 

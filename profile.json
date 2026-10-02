@@ -36,7 +36,7 @@
   "focus": [
     {"label": "Local AI", "value": 92},
     {"label": "Data analysis", "value": 80},
-    {"label": "Native apps", "value": 58},
+    {"label": "Native apps", "value": 72},
     {"label": "Automation", "value": 82},
     {"label": "AI research", "value": 77},
     {"label": "Multimodal AI", "value": 88}
