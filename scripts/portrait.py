@@ -15,7 +15,7 @@ import json
 import subprocess
 
 import numpy as np
-from PIL import Image, ImageOps
+from PIL import Image, ImageDraw, ImageFilter, ImageOps
 
 from build_profile import PORTRAIT
 
@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / '.local' / 'portrait-cache'
 WORK_WIDTH = 1224
 # Crop in working pixels (photo resized to 1224 px wide): hair, face and collar.
-CROP = (230, 340, 1090, 1400)
+# The top edge puts both eyes in the middle of one glyph row, not across two.
+CROP = (230, 334, 1090, 1394)
 # Classic ramp, light to dense. Coarse on purpose: it should read as ASCII art.
 RAMP = ' .:-=+*#%@'
 CELL_W = 8
@@ -36,6 +37,9 @@ TONE = {
     # Dots mark the pale sweater so the shoulders keep their outline.
     'light': dict(lo=.20, hi=.75, floor=0, gamma=1.1, detail=1.7, mix=.4, dots=.12),
 }
+# Both eye openings end at this share of the darker eye's brightness. Relighting
+# lifts the shadowed eye too, which made it read as closed.
+EYE_DEPTH = .7
 FADE_START, FADE_POWER = .62, 2.0
 # Soft elliptical falloff that rounds off the shoulders: center and radii in crop units.
 VIGNETTE = (.5, .36, .78, .74, .3)
@@ -63,7 +67,8 @@ def resize(a, size):
 
 def segment(photo):
     key = CACHE / f'{photo.stem}-{int(photo.stat().st_mtime)}'
-    if not (key / 'face.json').exists():
+    face = key / 'face.json'
+    if not face.exists() or 'leftEye' not in json.loads(face.read_text()):
         subprocess.run(['swift', str(ROOT / 'scripts' / 'segment_photo.swift'), str(photo), str(key)], check=True)
     return key
 
@@ -80,12 +85,13 @@ def load(photo):
     # The subject mask has the cleaner outline; person adds loose strands.
     mask = np.maximum(subject, np.clip((person - .35) / .5, 0, 1) * .8)
     face = json.loads((cache / 'face.json').read_text())
-    left, right = (np.array(face[k][0]) * scale for k in ('leftPupil', 'rightPupil'))
-    return lum, mask, left, right
+    points = {k: np.array(face[k]) * scale for k in ('leftPupil', 'rightPupil', 'leftEye', 'rightEye')}
+    return lum, mask, points
 
 
-def relight(lum, mask, left, right):
+def relight(lum, mask, face):
     """Lift the shadowed side of the face towards its mirror image."""
+    left, right = face['leftPupil'][0], face['rightPupil'][0]
     eyes = (left + right) / 2
     span = np.linalg.norm(right - left)
     cx, cy, rx, ry = eyes[0], eyes[1] + .6 * span, 1.5 * span, 1.8 * span
@@ -96,6 +102,22 @@ def relight(lum, mask, left, right):
     yy, xx = np.mgrid[0:h, 0:w]
     weight = np.clip((1.3 - ((xx - cx) / rx) ** 2 - ((yy - cy) / ry) ** 2) / .6, 0, 1)
     return np.clip(lum * (1 + (gain - 1) * weight), 0, 1)
+
+
+def balance_eyes(lum, face):
+    """Give both eye openings the same darkness, so neither looks closed."""
+    h, w = lum.shape
+    masks, means = [], []
+    for key in ('leftEye', 'rightEye'):
+        shape = Image.new('L', (w, h))
+        ImageDraw.Draw(shape).polygon([tuple(p) for p in face[key]], fill=255)
+        m = np.asarray(shape.filter(ImageFilter.GaussianBlur(4)), dtype=np.float64) / 255
+        masks.append(m)
+        means.append((lum * m).sum() / m.sum())
+    target = min(means) * EYE_DEPTH
+    for m, mean in zip(masks, means):
+        lum = lum * (1 + (target / mean - 1) * m)
+    return lum
 
 
 def tone(lum, mask, theme, cols, rows, ch):
@@ -132,8 +154,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--photo', type=Path, required=True)
     args = parser.parse_args()
-    lum, mask, left, right = load(args.photo.expanduser().resolve())
-    lum = relight(lum, mask, left, right)
+    lum, mask, face = load(args.photo.expanduser().resolve())
+    lum = balance_eyes(relight(lum, mask, face), face)
     cols, pitch = PORTRAIT['cols'], PORTRAIT['pitch']
     ch = round(CELL_W * pitch / .6)
     rows = round(cols * (CROP[3] - CROP[1]) / (CROP[2] - CROP[0]) * .6 / pitch)

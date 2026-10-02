@@ -46,7 +46,7 @@ if let buffer = person.results?.first?.pixelBuffer {
     try context.writePNGRepresentation(of: scaled, to: outDir.appendingPathComponent("person.png"), format: .L8, colorSpace: gray)
 }
 
-// Pupils and the face box anchor the relighting step.
+// Pupils, eye outlines and the face box anchor relighting and eye balancing.
 let landmarks = VNDetectFaceLandmarksRequest()
 try handler.perform([landmarks])
 var face: [String: Any] = ["width": width, "height": height]
@@ -55,6 +55,7 @@ if let found = landmarks.results?.first {
     face["box"] = [box.minX * width, (1 - box.maxY) * height, box.maxX * width, (1 - box.minY) * height]
     let size = CGSize(width: width, height: height)
     for (name, region) in [("leftPupil", found.landmarks?.leftPupil), ("rightPupil", found.landmarks?.rightPupil),
+                           ("leftEye", found.landmarks?.leftEye), ("rightEye", found.landmarks?.rightEye),
                            ("medianLine", found.landmarks?.medianLine)] {
         if let region {
             face[name] = region.pointsInImage(imageSize: size).map { [Double($0.x), height - Double($0.y)] }
