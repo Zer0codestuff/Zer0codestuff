@@ -24,6 +24,10 @@ FAMILY = "JBM,'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monosp
 # down at `rate` seconds per pixel. Then the closing prompt loops: idle, type, hold, erase.
 INTRO = {'idle': .5, 'enter': .35, 'rate': .0011}
 TYPING = {'start': .9, 'hold': 6.5, 'rest': .6, 'erase': .035, 'seed': 7}
+# Terminal window around the card: title bar height and bottom padding (px).
+WINDOW = {'bar': 30, 'pad': 12}
+# Section headings are shell commands.
+SECTIONS = {'building': 'ls ~/building', 'work': 'ls ~/selected-work', 'focus': 'cat focus.txt'}
 
 
 def keyframes(name, events, prop, length, end=None):
@@ -185,8 +189,9 @@ class Card:
         self.parts.append('</g>')
         self.css.append(''.join(css) + f'.tcur{{animation:cm {loop},cb {loop}}}')
 
-    def heading(self, x, y, title, size=14):
-        self.text(x, y, title, 'accent', size, 700)
+    def heading(self, x, y, command, size=14):
+        """A section heading written as a shell command."""
+        self.spans(x, y, [('% ', 'muted', 400), (command, 'accent', 700)], size)
 
     def portrait(self, cx, y, max_width):
         """Draw the portrait grid with the drawn glyphs centered on cx. Returns its height."""
@@ -291,10 +296,33 @@ class Card:
                  + ''.join(self.css)
                  + '.r{animation:on .01s step-end backwards}@keyframes on{from{opacity:0}to{opacity:1}}'
                  + '@media (prefers-reduced-motion:reduce){.r,.tk,.tcur,.ncur{animation:none}}</style>')
-        head = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{self.height}" '
-                f'viewBox="0 0 {self.width} {self.height}" role="img" aria-labelledby="title desc">'
+        body, height = self.window('\n'.join(self.parts))
+        head = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{height}" '
+                f'viewBox="0 0 {self.width} {height}" role="img" aria-labelledby="title desc">'
                 f'<title id="title">{escape(title)}</title><desc id="desc">{escape(desc)}</desc>{style}')
-        return head + '\n' + '\n'.join(self.parts) + '\n</svg>\n'
+        return head + '\n' + body + '\n</svg>\n'
+
+    def window(self, body):
+        """Put the card in a terminal window: outline, title bar with three dots and a title.
+
+        The window shows from the first frame; the intro plays inside it. On mobile the
+        content shrinks slightly so the radar labels stay inside the frame.
+        """
+        bar, narrow = WINDOW['bar'], self.width < 600
+        scale = .96 if narrow else 1
+        move = f'translate({8 if narrow else 12} {bar + 6})' + (f' scale({scale})' if narrow else '')
+        height = round(self.height * scale + bar + 6 + WINDOW['pad'])
+        line = self.c['faint']
+        # Flag order: green, white, red. The white dot gets an outline for the light theme.
+        dots = ''.join(f'<circle cx="{18 + 16 * i}" cy="{bar / 2 + 1:g}" r="5" fill="{self.c["blocks"][k]}" '
+                       f'stroke="{line}" stroke-width="{.8 if k == 2 else 0}"/>' for i, k in enumerate((0, 2, 4)))
+        title = f'{self.profile["user"]}@{self.profile["handle"]}: ~ (zsh)'
+        frame = (f'<rect x="1" y="1" width="{self.width - 2}" height="{height - 2}" rx="10" fill="none" '
+                 f'stroke="{line}" stroke-width="1.5"/>'
+                 f'<line x1="1" y1="{bar + 1}" x2="{self.width - 1}" y2="{bar + 1}" stroke="{line}"/>{dots}'
+                 f'<text x="{self.width / 2:g}" y="{bar / 2 + 5:g}" font-size="12" fill="{self.c["muted"]}" '
+                 f'text-anchor="middle">{enc(title)}</text>')
+        return f'{frame}\n<g transform="{move}">\n{body}\n</g>', height
 
 
 def description(p):
@@ -337,7 +365,7 @@ def identity(c, x, y, p):
 
 def focus(c, x, cx, y, p):
     """Focus heading and radar below y; returns the baseline of the closing prompt."""
-    c.heading(x, y, 'Focus')
+    c.heading(x, y, SECTIONS['focus'])
     c.radar(cx, y + 154, 100, p['focus'])
     return y + 326
 
@@ -349,9 +377,9 @@ def desktop(theme, p):
     h = c.portrait(204, 48, 280)
     x = 420
     sections = identity(c, x, 80, p) + 56
-    y = project_list(c, x, sections, 'Building now', p['building'], gap=48)
-    y = project_list(c, x, y + 12, 'Selected work', p['work'], gap=48)
-    # Focus lines up with Building now unless the portrait reaches lower.
+    y = project_list(c, x, sections, SECTIONS['building'], p['building'], gap=48)
+    y = project_list(c, x, y + 12, SECTIONS['work'], p['work'], gap=48)
+    # The focus section lines up with the building one unless the portrait reaches lower.
     # The closing prompt sits below whichever column ends lower.
     end = max(focus(c, 8, 204, max(48 + h + 34, sections), p), y + 12)
     ready, c.printing = c.when(end), None
@@ -366,8 +394,8 @@ def mobile(theme, p):
     h = c.portrait(200, 48, 252)
     x = 20
     y = identity(c, x, 48 + h + 44, p)
-    y = project_list(c, x, y + 56, 'Building now', p['building'])
-    y = project_list(c, x, y + 12, 'Selected work', p['work'])
+    y = project_list(c, x, y + 56, SECTIONS['building'], p['building'])
+    y = project_list(c, x, y + 12, SECTIONS['work'], p['work'])
     end = focus(c, x, 200, y + 26, p)
     ready, c.printing = c.when(end), None
     c.typed_prompt(x, end, p['typing']['mobile'], 12, delay=ready)
