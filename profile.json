@@ -72,7 +72,6 @@
   ],
   "stats_note": "Snapshot taken on 2026-10-04 from the GitHub API and the git history of the 35 repositories Zer0codestuff owns (forks excluded). Commits are commits from Gabriele's addresses on all branches, without merges. Lines count added code in those commits, skipping data, lockfiles, docs, vendored WASM and two bulk imports into DwarfStar. Contributions are the contribution graph total for the last year. Not updated automatically.",
   "stats": {
-    "since": 2022,
     "repos": 35,
     "commits": 448,
     "lines": "250k",

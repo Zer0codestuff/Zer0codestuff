@@ -357,8 +357,7 @@ def project_list(card, x, y, title, items, size=14, desc_size=13, gap=46):
 def stat_rows(p):
     """GitHub numbers as extra neofetch rows, from the snapshot in profile.json."""
     s = p['stats']
-    return [('Uptime', f'on GitHub since {s["since"]}'),
-            ('GitHub', f'{s["repos"]} repos · {s["commits"]} commits · ~{s["lines"]} lines'),
+    return [('GitHub', f'{s["repos"]} repos · {s["commits"]} commits · ~{s["lines"]} lines'),
             ('Activity', f'{s["contributions"]} contributions this year'),
             ('Hobby', p['hobby'])]
 
