@@ -49,18 +49,11 @@
     "Applied AI, native products and data systems,",
     "from a defensible idea to software people use."
   ],
+  "hobby": "burning tokens",
   "building": [
     [
       "WhisperDrop",
       "Local transcription and dictation for Mac"
-    ],
-    [
-      "AgentFiles",
-      "Menu bar app that syncs AI instruction files"
-    ],
-    [
-      "DwarfStar",
-      "Qwen 27B running locally on 16 GB Macs"
     ]
   ],
   "work": [
@@ -77,6 +70,14 @@
       "Catches video editing mistakes with local AI"
     ]
   ],
+  "stats_note": "Snapshot taken on 2026-10-04 from the GitHub API and the git history of the 35 repositories Zer0codestuff owns (forks excluded). Commits are commits from Gabriele's addresses on all branches, without merges. Lines count added code in those commits, skipping data, lockfiles, docs, vendored WASM and two bulk imports into DwarfStar. Contributions are the contribution graph total for the last year. Not updated automatically.",
+  "stats": {
+    "since": 2022,
+    "repos": 35,
+    "commits": 448,
+    "lines": "250k",
+    "contributions": 509
+  },
   "focus_note": "Profile focus values chosen by Gabriele, out of 100. Not measured skills or GitHub statistics.",
   "focus": [
     {

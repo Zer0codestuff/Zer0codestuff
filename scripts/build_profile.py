@@ -328,7 +328,7 @@ class Card:
 def description(p):
     focus = '; '.join(f'{a["label"]} {a["value"]}' for a in p['focus'])
     projects = '; '.join(f'{name}: {desc}' for name, desc in p['building'] + p['work'])
-    info = ' '.join(f'{k}: {v}.' for k, v in p['info'])
+    info = ' '.join(f'{k}: {v}.' for k, v in p['info'] + stat_rows(p))
     return (f'Neofetch-style card with an ASCII portrait of {p["name"]}. {info} {" ".join(p["tagline"])} '
             f'Projects. {projects}. Focus radar with values {p["name"].split()[0]} chose, out of 100: {focus}. '
             f'The last prompt types: {"".join(t for t, _ in p["typing"]["desktop"])}. The card links to {p["website"]}.')
@@ -354,9 +354,18 @@ def project_list(card, x, y, title, items, size=14, desc_size=13, gap=46):
     return y
 
 
+def stat_rows(p):
+    """GitHub numbers as extra neofetch rows, from the snapshot in profile.json."""
+    s = p['stats']
+    return [('Uptime', f'on GitHub since {s["since"]}'),
+            ('GitHub', f'{s["repos"]} repos · {s["commits"]} commits · ~{s["lines"]} lines'),
+            ('Activity', f'{s["contributions"]} contributions this year'),
+            ('Hobby', p['hobby'])]
+
+
 def identity(c, x, y, p):
     """Name, neofetch rows, tagline and color blocks; returns the next free y."""
-    y = info_block(c, x, y, p)
+    y = info_block(c, x, y, {**p, 'info': p['info'] + stat_rows(p)})
     c.text(x, y + 8, p['tagline'][0], 'muted', 13)
     c.text(x, y + 28, p['tagline'][1], 'muted', 13)
     c.blocks(x, y + 66)

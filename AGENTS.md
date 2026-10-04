@@ -3,7 +3,7 @@
 ## Purpose and architecture
 Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python generates four transparent SVG cards: desktop/mobile in dark/light. The card reads as `neofetch` output inside a terminal window: an ASCII portrait and a dotted focus radar on the left, the name, info rows, tagline, color blocks and projects on the right. Azzurri palette. No hosted backend or website framework.
 
-- `profile.json`: all card text, projects and the six focus values (0 to 100).
+- `profile.json`: all card text, projects, the six focus values (0 to 100) and the GitHub stats snapshot (`stats`, method in `stats_note`).
 - `assets/portrait-{dark,light}.txt`: 56 x 41 glyph grids on the classic ramp ` .:-=+*#%@`.
 - `assets/fonts/`: JetBrains Mono NL subsets (Regular, Bold) embedded in every SVG as base64 WOFF2, with the OFL license.
 - `scripts/build_profile.py`: builds the four cards. Standard library only.
@@ -27,13 +27,14 @@ Profile README for `Zer0codestuff/Zer0codestuff`. Standard-library Python genera
 Full redesign on 2026-10-02, at the user's request, replacing the previous Coral Toolkit card. The user approved a 44-column classic portrait and asked to publish it the same day. Later on 2026-10-02 the user compared it with the original 68-column portrait, picked the 56-column middle ground (M1, same classic ramp) and raised Native apps from 58 to 72. The user then reported one eye looking closed; fixed with eye balancing and a 6 px crop shift. The user then shrank the portrait to 280 px wide (252 on mobile) and picked the Azzurri palette over Coral and six other red, green and blue palettes (GitHub, One Dark, ANSI, Pastel, Neon, Terra), keeping the portrait neutral. Contact links below the card were removed, and the closing prompt now types an invitation to open the site (option A of three). Published in commit 48ca328 and checked on the live profile (dark desktop). Right after a push, github.com/.../raw/ URLs can return 504 for a few minutes and browsers may cache the broken image: reload before debugging.
 
 - New portrait conversion from the original photo: 56 columns, ten tones, fully opaque glyphs. A first 70-column photographic version was rejected as too detailed; the coarse one keeps brows, eyes, nose, beard and the hair silhouette readable while looking like ASCII art.
-- New layout: portrait and radar in the left column, all text in the right column. The portrait is 280 px wide on desktop. Focus lines up with Building now unless the portrait reaches lower, and the closing prompt sits below whichever column ends lower; desktop is 880 x 876, mobile 400 x 1438 including the window.
+- New layout: portrait and radar in the left column, all text in the right column. The portrait is 280 px wide on desktop. Focus lines up with Building now unless the portrait reaches lower, and the closing prompt sits below whichever column ends lower; desktop is 880 x 926, mobile 400 x 1442 including the window.
 - Terminal window (`WINDOW`, `Card.window`): rounded outline, title bar with green, white and red dots and `gabriele@zer0codestuff: ~ (zsh)`. It shows from the first frame; the intro plays inside it. Mobile content is scaled to 0.96 so the radar labels fit inside the frame.
 - Section headings are shell commands (`SECTIONS`): `% ls ~/building`, `% ls ~/selected-work`, `% cat focus.txt`. The user picked this window plus commands combination on 2026-10-03 over tmux and classic neofetch header variants.
-- New content from gabrielemonni.me and public repos, checked on 2026-10-02: info rows (role, work, study, base, code, stack, languages, web), the site tagline, Building now (WhisperDrop, AgentFiles, DwarfStar) and Selected work (MUVAD, AI Capability Signals, Video Edit Checker).
+- New content from gabrielemonni.me and public repos, checked on 2026-10-02: info rows (role, work, study, base, code, stack, languages, web), the site tagline, Building now and Selected work (MUVAD, AI Capability Signals, Video Edit Checker).
 - Radar values: Local AI 92, Data analysis 80, Native apps 72, Automation 82, AI research 77, Multimodal AI 88. Same principle as the approved Braille radar: one square dot lattice, explicitly positioned glyphs, open contour, no fill. Dots are now the font's `·` and `•` because JetBrains Mono has no Braille block.
 - Animation, approved by the user on 2026-10-02. Intro, played once per load: the top prompt types `neofetch`, Enter, then the output prints top down (`INTRO` in build_profile.py, elements carry `class="r"` with a delay from their y). Then the closing prompt appears and loops: it types `profile.json` `typing` (desktop: `open gabrielemonni.me  # click for an adventure`, mobile: `open gabrielemonni.me`) with uneven keystrokes, blinks while idle, erases and loops about every 15 s. Timings live in `TYPING` in build_profile.py. Without animation (static renderers, reduced motion) the whole card and the full command show at once, with a single cursor. A renderer that snapshots the very first instant would see only the top prompt; the user accepted that. Keyframe names are global inside one document, so preview pages must not inline several cards together. A line-by-line reveal of the whole card was tried and dropped: renderers that capture the first frame showed an empty card.
 - Azzurri palette: green headings and prompt, red labels and radar scores, white values, an azzurro radar contour and prompt path. The color blocks read as the Italian flag plus azzurro. Earlier bolder studies (amber, phosphor, lolcat and gradient portraits) were declined.
+- GitHub stats, added on 2026-10-04 at the user's request: four extra neofetch rows (`stat_rows`), `Uptime: on GitHub since 2022`, `GitHub: 35 repos · 448 commits · ~250k lines`, `Activity: 509 contributions this year`, `Hobby: burning tokens`. The user picked plain rows over a big-number grid, a `cloc` language table with bars and a number strip, and dropped a count of AI co-authored commits from the Hobby row. Building now keeps only WhisperDrop (AgentFiles and DwarfStar removed). The numbers are a manual snapshot: to refresh, recount from the GitHub API and cloned repos as described in `stats_note` (the raw additions total, about 1.14M, is inflated by data files, lockfiles, vendored WASM and the DwarfStar engine import).
 - Removed the old generators (`build_neofetch.py`, `build_radar_*.py`) and `explorations/`. They remain in git history.
 
 ## Preferences and constraints
@@ -43,6 +44,7 @@ Full redesign on 2026-10-02, at the user's request, replacing the previous Coral
 - Azzurri: green headings, red labels, neutral values, azzurro radar. Light mode needs strong text and visible radar rings.
 - The portrait stays neutral: white on dark, near-black on light. No tinted or gradient portrait.
 - Radar values are focus values the user chose. Never present them as measured skills or live GitHub statistics.
+- GitHub stats must be real counts with a dated method in `profile.json`, rounded down when estimated. Never present them as live.
 - Local QA, the original photo, masks and backups stay outside version control.
 - Trailing spaces in portrait grids are intentional fixed-width padding.
 - Commit or publish only when the user asks.
@@ -52,7 +54,7 @@ Full redesign on 2026-10-02, at the user's request, replacing the previous Coral
 - Return to pale light portraits or faint light-theme text and radar.
 - Add yellow or orange accents to the Azzurri card.
 - Reintroduce gh-issue-scout references.
-- Add fake statistics, invented interests, badges, counters or unrelated widgets.
+- Add fake or unverified statistics, invented interests, badges, counters or unrelated widgets.
 - Add a solid card background, filled radar texture, vertex stars, sidebar bars or uneven dot spacing.
 - Return to a centered radar alone below the desktop profile.
 - Add load-in animations beyond the neofetch intro, or break its static fallback: without animation everything must be visible.
