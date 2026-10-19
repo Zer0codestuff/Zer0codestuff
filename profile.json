@@ -70,12 +70,12 @@
       "Qwen 3.8 27B running locally on 16 GB Macs"
     ]
   ],
-  "stats_note": "Snapshot taken on 2026-10-04 from the GitHub API and the git history of the 35 repositories Zer0codestuff owns (forks excluded). Commits are commits from Gabriele's addresses on all branches, without merges. Lines count added code in those commits, skipping data, lockfiles, docs, vendored WASM and two bulk imports into DwarfStar. Contributions are the contribution graph total for the last year. Not updated automatically.",
+  "stats_note": "Snapshot taken on 2026-10-19 from the GitHub API and the git history of the 38 repositories Zer0codestuff owns (forks excluded). Commits are commits from Gabriele's addresses on all branches, without merges. Lines count added code in those commits, skipping data, lockfiles, docs, config files, vendored WASM and two bulk imports into DwarfStar. Contributions are the contribution graph total for the last year. Not updated automatically.",
   "stats": {
-    "repos": 35,
-    "commits": 448,
-    "lines": "250k",
-    "contributions": 509
+    "repos": 38,
+    "commits": 673,
+    "lines": "320k",
+    "contributions": 849
   },
   "focus_note": "Profile focus values chosen by Gabriele, out of 100. Not measured skills or GitHub statistics.",
   "focus": [
